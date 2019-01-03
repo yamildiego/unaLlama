@@ -1,0 +1,41 @@
+<loading ng-show="loading" margin="10"></loading>
+<div ng-show="!loading">
+    <style>
+        .card-my-article {
+            margin-top: 1rem;
+        }
+    </style>
+    <div ng-show="myArticles.length == 0 && !loading" class="no-articles text-center">
+        No tienes anuncios creados
+    </div>
+    <div class="card card-my-article" ng-repeat="article in myArticles">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2" style="margin: auto; text-align: center;">
+                    <img class="card-img-top" style="width:80px" ng-src="{{(article.photos.length > 0)? article.photos[(article.indexPhoto) ? article.indexPhoto : 0].thumbnail: './Content/images/default-image.png'}}">
+                </div>
+                <div class="col-10">
+                    <h5 class="card-title">{{article.title}}</h5>
+                    <p>
+                        (*) Los avisos son dados de baja automáticamente pasado 30 días de su publicacion luego de este
+                        periodo
+                        podra republicar el aviso si lo desea.
+                    </p>
+                    <a href="#!/ver-anuncio/{{article.id}}" class="btn btn-info">Ver</a>
+                    <a href ng-click="republish(article)" class="btn btn-success" ng-show="article.show">Republicar</a>
+                    <a href="#!/editar-anuncio/{{article.id}}" class="btn btn-primary">Editar</a>
+                    <a href class="btn btn-danger" ng-click="remove(article);">Eliminar</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <div ng-show="!article.show">
+                {{getDays(article.date_publication)}} {{((getDays(article.date_publication) == 1) ? 'dia' : 'días')}}
+                restantes para que el anuncio caduque.
+            </div>
+            <div ng-show="article.show">
+                Este anuncio no se encuentra publicado.
+            </div>
+        </div>
+    </div>
+</div>

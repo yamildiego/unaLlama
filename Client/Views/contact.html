@@ -1,0 +1,28 @@
+<loading ng-show="loadForm" margin="10"></loading>
+<div ng-show="successful" class="successful">La consulta se envio con éxito, te responderemos a la brevedad. Te
+    redireccionaremos
+    automáticamente en {{seconds}} segundos.</div>
+<div ng-hide="loadForm || successful" id="main-form">
+    <div class="panel">
+        <h2>Contacto</h2>
+        <p>Por favor, complete todos los campos obligatorios.<span class="mandatory">(*)</span></p>
+    </div>
+    <form autocomplete="off">
+        <div class="form-group">
+            <label for="name">Nombre<span class="mandatory">(*)</span></label>
+            <input type="text" id="name" ng-model="form.name" class="form-control" placeholder="Nombre">
+        </div>
+        <div class="form-group">
+            <label for="email">Correo electrónico<span class="mandatory">(*)</span></label>
+            <input type="text" id="email" ng-model="form.email" class="form-control" placeholder="Correo electrónico">
+        </div>
+        <div class="form-group">
+            <label for="query">Consulta <span class="mandatory">(*)</span></label>
+            <textarea class="form-control" ng-model="form.query" id="query" rows="3" placeholder="Consulta"></textarea>
+        </div>
+        <div ng-show="errors.length > 0" class="container_errors">
+            <p ng-repeat="error in errors">{{error}}</p>
+        </div>
+        <button type="submit" class="btn btn-info btn-action" ng-click="send()">Enviar</button>
+    </form>
+</div>

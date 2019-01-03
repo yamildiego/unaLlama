@@ -1,0 +1,49 @@
+<div class="bg-main" style="margin-top: 10px; background: #fff">
+    <loading ng-show="loading" margin="10"></loading>
+    <div class="row" ng-hide="loading">
+        <div class="col-xl-3">
+            <div class="w-100 p-3">
+                <div class="text-center w-100">
+                    <loading ng-show="loadingPhoto" margin="10"></loading>
+                    <img ng-hide="loadingPhoto" class="rounded-circle" ng-src="{{ ((userProfileData.photo.indexOf('/') != -1) ? userProfileData.photo : ('../Server/assets/php/files/thumbnail/' + userProfileData.photo))}}"
+                        alt="{{userProfileData.username}}" style="min-width: 100px; max-width: 100%">
+                </div>
+                <div class="text-center w-100" ng-show="userData != null && userProfileData.id == userData.id">
+                    <div class="row">
+                        <div ng-class="{'col-12': (userProfileData.photo == 'user.png'),'col-6':(userProfileData.photo != 'user.png')}">
+                            <a class="small" href ng-click="editPhoto();">Editar imagen</a>
+                        </div>
+                        <div class="col-6" ng-show="userProfileData.photo != 'user.png'">
+                            <a class="small" href ng-click="removePhoto();">Eliminar imagen</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="small" href ng-click="editPassword();">
+                                Editar contraseña
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <form autocomplete="off" action="" class="mt-3 form-profile">
+                    <div class="form-group">
+                        <label class="label">Usuario</label>
+                        <input class="form-control" type="text" ng-model="userProfileData.username" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Total de anuncios publicados</label>
+                        <input class="form-control" type="text" ng-model="userProfileData.total" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Cantidad de anuncios activos</label>
+                        <input class="form-control" type="text" value="{{myArticles.length}}" disabled>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            <h4>Anuncios de {{(userProfileData.username!= null)? userProfileData.username : userProfileData.name }}</h4>
+            <view-article ng-hide="loadingArticles" ng-repeat="article in myArticles" article="article" user="{{userProfileData.id}}"></view-article>
+        </div>
+    </div>
+</div>

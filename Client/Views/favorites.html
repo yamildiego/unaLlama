@@ -1,0 +1,10 @@
+<div class="bg-main">
+    <loading ng-show="loading" margin="10"></loading>
+    <div ng-show="(articles | filter: {  isFb: true }).length == 0 && !loading" class="no-articles">
+        <div style="text-align: center;">No hay anuncios</div>
+    </div>
+    <view-article ng-hide="loading" ng-repeat="article in articles  | filter: {  isFb: true } " article="article" user="{{userData.id}}"></view-article>
+    <br>
+    <br>
+    <br>
+</div>

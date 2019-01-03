@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^famet.com.ar$ [OR]
+RewriteCond %{HTTP_HOST} ^www.famet.com.ar$ [OR]
+RewriteCond %{HTTP_HOST} ^unallama.com.ar [NC]
+RewriteRule ^(.*)$ http://www.unallama.com.ar/$1 [L,R=301]
+RewriteCond $1 !^(index.php|assets|Scripts)
+RewriteRule ^(.*)$ index.php/$1 [L]

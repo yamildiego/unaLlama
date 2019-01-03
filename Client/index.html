@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="UnaLlama">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="./Content/images/favicon.ico">
+
+    <title>Una Llama</title>
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/underscore/underscore-min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/angular-route/angular-route.min.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+
+    <script src="node_modules/angular-popeye/release/popeye.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+
+    <script src="node_modules/moment/moment.js"></script>
+    <script src="node_modules/moment/locale/es.js"></script>
+    <script src="node_modules/angular-moment/angular-moment.min.js"></script>
+
+    <script src="App/app.js"></script>
+    <script src="App/route.js"></script>
+    <script src="App/config.js"></script>
+    <script src="App/Directives/loading.js"></script>
+    <script src="App/Services/AuthService.js"></script>
+    <script src="App/Services/FaceService.js"></script>
+    <script src="App/Directives/viewArticle/viewArticle.js"></script>
+    <script src="App/Directives/carrusel/carrusel.js"></script>
+    <script src="App/Directives/longText/longText.js"></script>
+    <script src="App/Directives/comments/comments.js"></script>
+    <script src="App/Directives/focusMe.js"></script>
+
+    <script src="App/Controllers/mainController.js"></script>
+    <script src="App/Controllers/homeController.js"></script>
+    <script src="App/Controllers/listController.js"></script>
+    <script src="App/Controllers/listForCategoryController.js"></script>
+    <script src="App/Controllers/contactController.js"></script>
+    <script src="App/Controllers/newArticleController.js"></script>
+    <script src="App/Controllers/editArticleController.js"></script>
+    <script src="App/Controllers/createAccountController.js"></script>
+    <script src="App/Controllers/loginController.js"></script>
+    <script src="App/Controllers/forgotMyPasswordController.js"></script>
+    <script src="App/Controllers/resetPasswordController.js"></script>
+    <script src="App/Controllers/photoModalController.js"></script>
+    <script src="App/Controllers/modal/confirmRemoveController.js"></script>
+    <script src="App/Controllers/modal/confirmRemovePhotoController.js"></script>
+    <script src="App/Controllers/modal/confirmRepublishController.js"></script>
+    <script src="App/Controllers/modal/editPasswordController.js"></script>
+    <script src="App/Controllers/modal/editPhotoController.js"></script>
+    <script src="App/Controllers/myArticlesController.js"></script>
+    <script src="App/Controllers/viewArticleController.js"></script>
+    <script src="App/Controllers/favoritesController.js"></script>
+    <script src="App/Controllers/profileController.js"></script>
+    <script src="App/Controllers/validateAccountController.js"></script>
+
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="node_modules/angular-popeye/release/popeye.min.css" />
+
+    <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <link rel="stylesheet" href="./Content/js/jQuery-File-Upload-9.28.0/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="./Content/js/jQuery-File-Upload-9.28.0/css/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="./Content/css/fonts.css">
+    <link rel="stylesheet" href="./Content/css/style.css">
+</head>
+
+<body ng-controller="mainController">
+    <div style="text-align: center; width: 100%;" ng-show="preload == null">
+        <i class="fas fa-spinner fa-4x fa-pulse" style="margin-bottom:15%; margin-top: 10%; color:#61a4ff"></i>
+    </div>
+    <loading ng-show="load" margin="10"></loading>
+    <div class="container hide" ng-hide="load" ng-style="preload">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-yd">
+            <a class="navbar-brand logo d-none d-sm-none d-md-none d-lg-block" href="#">
+                <img src="./Content/images/logo.png" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link name-app" href="#" ng-class="{active: $route.current.activetab == 'home' }">
+                            UnaLlama
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href ng-class="{active: $route.current.activetab == 'list' }"
+                            id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categorías
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#!/listado-por-categoria/{{category.id}}" ng-repeat="category in categories">
+                                {{category.name + ' ('+category.quantity_products+')'}}
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ng-click="goTo('/publicar-anuncio');" href ng-class="{active: $route.current.activetab == 'new-article' }">
+                            Publicar anuncio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ng-click="goTo('/contacto');" href ng-class="{active: $route.current.activetab == 'contact' }">
+                            Contacto
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills" ng-show="userData != null">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle btn btn-light" style=" font-family: 'ABeeZee', sans-serif!important;"
+                            data-toggle="dropdown" href role="button" aria-haspopup="true" aria-expanded="false">
+                            <img style="border-radius:20px; max-width: 32px;" ng-src="{{ ((userData.photo.indexOf('/') != -1) ? userData.photo : ('../Server/assets/php/files/thumbnail/' + userData.photo))}}"
+                                alt="">
+                            {{userData.name}}
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#!/publicar-anuncio">Publicar anuncio</a>
+                            <a class="dropdown-item" href="#!/mis-anuncios">Mis anuncios</a>
+                            <a class="dropdown-item" href="#!/favoritos">Favoritos</a>
+                            <a class="dropdown-item" href="#!/perfil/{{userData.id}}">Configuración</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href ng-click="logout();">Cerrar sesión</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" ng-show="userData == null">
+                    <a class="btn btn-primary mr-sm-2" ng-click="goTo('/favoritos');" href>
+                        <i class="far fa-heart"></i> Favoritos
+                    </a>
+                    <a href ng-click="goTo('/login');" class="btn btn-warning my-2 my-sm-0">Inicia sesión</a>
+                </form>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light y-border-primary">
+            <form class="form-inline mr-auto">
+                <div class="input-group mr-sm-2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">{{search.category.name}}</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href ng-click="$event.preventDefault(); search.category = {id: 0, name: 'Categoría'};">Todas</a>
+                            <a class="dropdown-item" href ng-click="$event.preventDefault(); search.category = category;"
+                                ng-repeat="category in categories">{{category.name}}</a>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control search" ng-model="search.text" placeholder="¿Que buscas?">
+                </div>
+                <a ng-click="btnSearch();" class="btn btn-warning my-2 my-sm-0" href><i class="fas fa-search"></i></a>
+            </form>
+            <ul class="navbar-nav my-2 my-lg-0 d-none d-sm-none d-md-block">
+                <li class="nav-item">
+                    <a ng-click="goTo('/crear-cuenta');" href class="link-create-account">Crear cuenta</a>
+                </li>
+            </ul>
+        </nav>
+        <loading ng-show="loadMain" margin="10" color="#fff"></loading>
+        <div class="main" ng-hide="loadMain">
+            <div class="page {{ pageClass }}" ng-view></div>
+        </div>
+    </div>
+    <footer class="container page-footer font-small blue pt-4 text-white hide" ng-hide="load" ng-style="preload">
+        <div class="bg-dark text-center text-md-left pt-4 pl-4 pr-4">
+            <div class="row">
+                <div class="col-md-6 mt-md-0 mt-3">
+                    <h5 style="text-shadow: 1px 1px 3px black;">Una Llama</h5>
+                    <p>El comercio inteligente</p>
+                </div>
+                <hr class="clearfix w-100 d-md-none pb-3">
+                <div class="col-md-2 mb-md-0 mb-2">
+                    <ul class="list-unstyled text-white">
+                        <li><a ng-click="goTo('/');" href class="text-white small"><u>Inicio</u></a></li>
+                        <li><a ng-click="goTo('/listado');" href class="text-white small"><u>Anuncios</u></a></li>
+                        <li><a ng-click="goTo('/publicar-anuncio');" href class="text-white small"><u>Publicar anuncio</u></a></li>
+                        <li><a ng-click="goTo('/contacto');" href class="text-white small"><u>Contacto</u></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-md-0 mb-4">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a ng-click="goTo('/quienes-somos');" href class="text-white small">
+                                <u>¿Quienes somos?</u>
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="goTo('/terminos-y-condiciones');" href class="text-white small">
+                                <u>Terminos y condiciones del servicio</u>
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="goTo('/publicidad');" href class="text-white small">
+                                <u>Publicidad</u>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="navegador">
+            <ul>
+                <li><a target="_blank" href="https://www.instagram.com/yamildiego"><i class="fab fa-instagram"></i></a></li>
+                <li><a target="_blank" href="https://www.facebook.com/yamildieg0"><i class="fab fa-facebook"></i></a></li>
+                <li><a target="_blank" href="https://twitter.com/Yamil90725878"><i class="fab fa-twitter"></i></a></li>
+            </ul>
+        </div>
+        <div class="bg-dark footer-copyright text-center py-3">© 2019 Copyright:
+            <a href="https://www.unaLlama.com.ar/"> UnaLlama.com.ar</a>
+        </div>
+    </footer>
+
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/vendor/jquery.ui.widget.js"></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <!-- blueimp Gallery script -->
+    <script src="https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload-process.js"></script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload-image.js"></script>
+    <!-- The File Upload audio preview plugin -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload-audio.js"></script>
+    <!-- The File Upload video preview plugin -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload-video.js"></script>
+    <!-- The File Upload validation plugin -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload-validate.js"></script>
+    <!-- The File Upload Angular JS module -->
+    <script src="./Content/js/jQuery-File-Upload-9.28.0/js/jquery.fileupload-angular.js"></script>
+</body>
+
+</html>

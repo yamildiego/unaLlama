@@ -1,0 +1,29 @@
+<any ng-hide="articles.length == 0">
+    <link rel="stylesheet" href="./App/Directives/carrusel/carrusel.css">
+    <div class="list-articles-home {{type}}">
+        <h4>{{title}}</h4>
+        <loading size="fa-3x" ng-show="load" margin="2" color="#fff"></loading>
+        <div class="row" ng-hide="load">
+            <div class="col-lg-3 col-sm-6" ng-repeat="article  in articles| limitTo :4">
+                <div class="card my-card" style="height:200px;">
+                    <div class="card-body text-center" style="height:200px;">
+                        <h5 class="card-title" style="max-height: 24px; font-size:12px;">{{article.title}}</h5>
+                        <img style="max-width: 100px;" ng-src="{{article.photos[0].thumbnail}}" alt="">
+                        <div class="price" ng-show="isValidPrice(article.price) && article.operation !== 4">
+                            $ {{getFormatedPriceWhole(article.price)}}
+                            <span class="cents" ng-class="{millons:( getFormatedPriceDecimal(article.price) == 'Millon'||  getFormatedPriceDecimal(article.price) == 'Millones') }">{{getFormatedPriceDecimal(article.price)}}</span>
+                        </div>
+                        <span class="date-publication">
+                            <span style="color:#999;">Visto {{article.viewed}} veces</span>
+                            &nbsp;&nbsp;
+                            {{(article.date_publication * 1000)| date : 'HH:mm | dd/MM/yyyy'}}
+                        </span>
+                        <div class="w-100 text-center">
+                            <a href="#!/ver-anuncio/{{article.id}}" class="card-link">Ver más</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</any>

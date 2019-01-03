@@ -1,0 +1,30 @@
+<style>
+    .link {
+        font-size: 50px;
+        position: absolute;
+        top: 0;
+        color: #555;
+        background: #ffffff7a;
+        padding: 1rem;
+        border-radius: 45px;
+        width: 7rem;
+        text-align: center;
+    }
+
+    .link-left {
+        left: -7.2rem;
+    }
+
+    .link-right {
+        right: -7.2rem;
+    }
+</style>
+<a class="link link-left" href ng-click="backP()" ng-hide="photos.length == 1">
+    <i class="fa fa-chevron-left"></i>
+</a>
+<a class="link link-right" href ng-click="nextP()" ng-hide="photos.length == 1">
+    <i class="fa fa-chevron-right"></i>
+</a>
+<div class="d-block mx-auto">
+    <img ng-src="{{photos[indexPhoto].original}}" class="img-fluid d-block mx-auto" alt="Responsive image"></img>
+</div>

@@ -1,0 +1,47 @@
+.list-articles-home {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fffae4;
+    border: 1px solid #fbcc38;
+    border-radius: 4px;
+}
+
+.list-articles-home .my-card {
+    margin: 1rem;
+}
+
+.list-articles-home .my-card .price {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    padding: 5px;
+    color: #555;
+    font-size: 12px;
+}
+
+.list-articles-home .my-card .price .cents {
+    position: absolute;
+    font-size: 11px;
+    top: 0.3rem;
+    right: -8px;
+}
+
+.list-articles-home .date-publication {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    padding: 2px 4px 2px 4px;
+    background: #f8f9fa;
+    border-radius: 0px 0px 4px 0px;
+    color: #9593f9;
+    cursor: default;
+}
+
+.list-articles-home .millons {
+    right: -38px !important;
+}
+
+.my-card .card-title {
+    color: #444;
+}

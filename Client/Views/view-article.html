@@ -1,0 +1,115 @@
+<loading ng-show="loading" margin="10"></loading>
+<div ng-show="!loading">
+    <div ng-hide="successful" id="main-form" style="width: 100%;">
+        <div class="panel">
+            <div ng-show="!article.isPublished" class="bg-danger text-light p-1">
+                Este anuncio es viejo. El mismo fue dado de baja automáticamente.
+            </div>
+            <h2>
+                Anuncio > {{article.title}}
+                <loading class="float-right" style="padding-right: 5px;" size="fa-1x" ng-show="article.loadingFavorite"></loading>
+                <a class="link-favorites" style="font-size:15px;" ng-show="sessionExpired" href="#!/login">
+                    Es necesario iniciar sesión para agregar anuncios a favoritos.
+                </a>
+                <a href class="link-favorites" style="font-size:15px;" ng-click="addRemoveFb(article, 'add')" ng-hide="article.loadingFavorite || article.isFb || sessionExpired">
+                    <i class="far fa-star" style="color:#ffc107;"></i>
+                    <span> Agregar a favoritos</span>
+                </a>
+                <a href class="link-favorites" style="font-size:15px;" ng-click="addRemoveFb(article, 'remove')"
+                    ng-hide="article.loadingFavorite || !article.isFb || sessionExpired">
+                    <i class="fas fa-star" style="color:#ffc107;"></i>
+                    <span> Eliminar de favoritos</span>
+                </a>
+                <button type="button" class="btn btn-outline-info btn-sm" ng-click="back()">Volver</button>
+            </h2>
+            <p>
+                Usuario: yamildiego
+                <small>
+                    <a href="#!/perfil/{{article.userId}}">Ver perfil</a>
+                </small>
+            </p>
+        </div>
+        <form autocomplete="off">
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea disabled id="description" ng-model="article.description" class="form-control" cols="20" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Precio</label>
+                <input disabled type="number" id="price" ng-model="article.price" class="form-control">
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="category">Categoria</label>
+                    </div>
+                    <select disabled class="custom-select" id="category" ng-model="article.categoryId">
+                        <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="operation">Operación</label>
+                    </div>
+                    <select disabled class="custom-select" id="operation" ng-model="article.operation">
+                        <option value="1" ng-show="article.categoryId != 14">Compro</option>
+                        <option value="2" ng-show="article.categoryId != 14">Vendo</option>
+                        <option value="3" ng-show="article.categoryId == 10 || article.categoryId == 15 ">Alquilo</option>
+                        <option value="4" ng-show="article.categoryId == 1 ">Regalo</option>
+                        <option value="5" ng-show="article.categoryId == 14">Buscando trabajo</option>
+                        <option value="6" ng-show="article.categoryId == 14">Ofreciendo un trabajo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-show="article.categoryId != 0 && article.categoryId != 1 && article.categoryId != 10 && article.categoryId != 14">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="state">Estado</label>
+                    </div>
+                    <select disabled class="custom-select" id="state" ng-model="article.state">
+                        <option value="1">Usado</option>
+                        <option value="2">Nuevo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" ng-show="article.categoryId == 2">
+                <div class="form-group col-6">
+                    <label for="year">Año</label>
+                    <input type="number" id="year" disabled ng-model="article.year" class="form-control">
+                </div>
+                <div class="form-group col-6">
+                    <label for="kilometers">Kilometros</label>
+                    <input type="number" id="kilometers" disabled ng-model="article.kilometers" class="form-control">
+                </div>
+            </div>
+            <h5>Datos de contacto</h5>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="phone">Telefono</label>
+                    <input type="text" id="phone" disabled ng-model="article.phone" class="form-control">
+                </div>
+                <div class="form-group col-6">
+                    <label for="address">Dirección</label>
+                    <input type="text" id="address" disabled ng-model="article.address" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input disabled type="email" id="email" ng-model="article.email" class="form-control">
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-2" ng-repeat="photo in article.photos">
+                <a href ng-click="openPhoto(article.photos, $index)">
+                    <img ng-src="{{photo.thumbnail}}" alt="article.title">
+                </a>
+            </div>
+        </div>
+        <br>
+        <comments article="article" edit="userData != null"></comments>
+        <a href class="btn btn-outline-info" ng-click="back()">Volver</a>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+<loading ng-show="loading" margin="10"></loading>
+<div ng-show="!loading">
+    <div ng-show="successful" class="successful">Su anuncio se ha publicado con éxito, te redireccionaremos
+        automáticamente en {{seconds}} segundos.
+    </div>
+    <div ng-hide="successful" id="main-form" style="width: 600px;">
+        <div class="panel">
+            <h2>Nuevo anuncio</h2>
+        </div>
+        <form autocomplete="off">
+            <div class="form-group">
+                <label for="title">Título <span class="mandatory">(*)</span></label>
+                <input type="text" id="title" ng-model="form.title" class="form-control" placeholder="Título" maxlength="100">
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción <span class="mandatory">(*)</span></label>
+                <textarea id="description" ng-model="form.description" class="form-control" placeholder="Descripción"
+                    cols="20" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Precio</label>
+                <input type="number" id="price" min="0" step="0.01" ng-model="form.price" class="form-control"
+                    placeholder="Precio">
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="category">Categoria <span class="mandatory">(*)</span></label>
+                    </div>
+                    <select ng-change="form.operation = null" class="custom-select" id="category" ng-model="form.category">
+                        <option value="0">Selecione una categoria</option>
+                        <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="operation">Operación <span class="mandatory">(*)</span></label>
+                    </div>
+                    <select class="custom-select" id="operation" ng-model="form.operation">
+                        <option value="">Selecione una operación</option>
+                        <option value="1" ng-show="form.category != 14">Compro</option>
+                        <option value="2" ng-show="form.category != 14">Vendo</option>
+                        <option value="3" ng-show="form.category == 10 || form.category == 15 ">Alquilo</option>
+                        <option value="4" ng-show="form.category == 1 ">Regalo</option>
+                        <option value="5" ng-show="form.category == 14">Buscando trabajo</option>
+                        <option value="6" ng-show="form.category == 14">Ofreciendo un trabajo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-show="form.category != 0 && form.category != 1 && form.category != 10 && form.category != 14">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="state">Estado <span class="mandatory">(*)</span></label>
+                    </div>
+                    <select class="custom-select" id="state" ng-model="form.state">
+                        <option value="">Selecione el estado</option>
+                        <option value="1">Usado</option>
+                        <option value="2">Nuevo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" ng-show="form.category == 2">
+                <div class="form-group col-6">
+                    <label for="year">Año</label>
+                    <input type="number" min="1960" id="year" max="{{anio}}" step="1" ng-model="form.year" class="form-control"
+                        placeholder="Año">
+                </div>
+                <div class="form-group col-6">
+                    <label for="kilometers">Kilometros</label>
+                    <input type="number" min="0" step="1" ng-model="form.kilometers" id="kilometers" class="form-control"
+                        placeholder="Kilometros">
+                </div>
+            </div>
+            <h5>Datos de contacto</h5>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="phone">Telefono</label>
+                    <input type="text" id="phone" ng-model="form.phone" class="form-control">
+                </div>
+                <div class="form-group col-6">
+                    <label for="address">Dirección</label>
+                    <input type="text" id="address" ng-model="form.address" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" ng-model="form.email" class="form-control">
+            </div>
+        </form>
+        <form id="fileupload" method="POST" file-upload="options" enctype="multipart/form-data" ng-class="{'fileupload-processing': processing() || loadingFiles}">
+            <div class="row fileupload-buttonbar">
+                <div class="col-lg-7">
+                    <span class="btn btn-success fileinput-button" ng-class="{disabled: (disabled || queue.length >= 5) }">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>Agregar foto</span>
+                        <input type="file" name="files[]" multiple ng-disabled="(disabled || queue.length >= 5)">
+                    </span>
+                    <span class="fileupload-process"></span>
+                </div>
+                <div class="col-lg-5 fade" ng-class="{in: active()}">
+                    <div class="progress progress-striped active" file-upload-progress="progress()">
+                        <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
+                    </div>
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+            </div>
+            <table class="table table-striped files ng-cloak">
+                <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
+                    <td ng-hide="true">{{dataArticle.photos = queue}}</td>
+                    <td ng-switch on="!!file.thumbnailUrl">
+                        <div class="preview" ng-switch-when="true">
+                            <a ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}" download="{{file.name}}"
+                                gallery><img ng-src="{{file.thumbnailUrl}}" alt=""></a>
+                        </div>
+                        <div class="preview" ng-switch-default file-upload-preview="file"></div>
+                    </td>
+                    <td>
+                        <p class="name" ng-switch on="!!file.url">
+                            <span ng-switch-when="true" ng-switch on="!!file.thumbnailUrl">
+                                <a ng-switch-when="true" ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}"
+                                    download="{{file.name}}" gallery>{{'Imagen-' + ($index + 1)}}</a>
+                                <a ng-switch-default ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}"
+                                    download="{{file.name}}">{{'Imagen-' + ($index + 1)}}</a>
+                            </span>
+                            <span ng-switch-default>{{'Imagen-' + ($index + 1)}}</span>
+                        </p>
+                        <strong ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+                    </td>
+                    <td>
+                        <p class="size">{{file.size | formatFileSize}}</p>
+                        <div class="progress progress-striped active fade" ng-class="{pending: 'in'}[file.$state()]"
+                            file-upload-progress="file.$progress()">
+                            <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger destroy" ng-click="clear(file); destroy(file.name)">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div ng-show="errors.length > 0" class="container_errors">
+            <p ng-repeat="error in errors">{{error}}</p>
+        </div>
+        <button type="submit" class="btn btn-info" ng-click="newArticle()">Publicar</button>
+    </div>
+</div>

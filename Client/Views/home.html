@@ -1,0 +1,49 @@
+<div class="bg-main" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="btns-home">
+                <a href="#!/listado-por-categoria/0" title="Todo" class="btn text-white all"><i class="far fa-list-alt"></i>
+                    <span class="h-sm">Todo</span></a>
+                <a href="#!/listado-por-categoria/14" title="Trabajo" class="btn text-white work"><i class="fas fa-hammer"></i>
+                    <span class="h-sm">Trabajo</span> </a>
+                <a href="#!/listado-por-categoria/2" title="Autos" class="btn text-white cars"><i class="fas fa-car"></i>
+                    <span class="h-sm">Autos</span>
+                </a>
+                <a href="#!/listado-por-categoria/10" title="Inmuebles" class="btn text-white houses"><i class="fas fa-home"></i>
+                    <span class="h-sm">Inmuebles</span></a>
+            </div>
+            <div class="card card-home">
+                <div class="card-body">
+                    <h5 class="card-title">Categorías</h5>
+                    <div class="row links-categories">
+                        <div class="col-sm-6">
+                            <div class="category-link" ng-repeat="category  in categories" ng-if="8 > $index">
+                                <a href="#!/listado-por-categoria/{{category.id}}" class="card-link">{{category.name}}</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="category-link" ng-repeat="category  in categories" ng-if="$index > 7">
+                                <a href="#!/listado-por-categoria/{{category.id}}" class="card-link">{{category.name}}</a>
+                            </div>
+                            <div class="category-link">
+                                <a href="#!/listado-por-categoria/0" class="card-link">Ver todo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <p class="text-center" style="font-size: 40px; margin:auto;">
+                Publicidad
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <carrusel articles="mostVisited" title="Anuncios mas visitados la ultima semana" type="visited" load="loadVisited"></carrusel>
+            <carrusel articles="mostPopular" title="Anuncios mas populares" type="popular" load="loadPopular"></carrusel>
+            <carrusel articles="mostRecent" title="Anuncios mas recientes" type="recent" load="loadRecent"></carrusel>
+        </div>
+    </div>
+</div>

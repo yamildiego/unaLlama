@@ -1,0 +1,131 @@
+<div class="bg-main">
+    <loading ng-show="loading" margin="10"></loading>
+    <div ng-show="!loading">
+        <div class="row">
+            <div class="col-xl-3">
+                <div class="card filter">
+                    <h5 class="card-header header-yd">Filtro <a href class="badge badge-info badge-pill" style="font-size:12px"
+                            ng-click="resetFilter();">Reset</a></h5>
+                    <div class="card-body">
+                        <loading ng-show="loadingFilter"></loading>
+                        <form ng-hide="loadingFilter" autocomplete="off">
+                            <div class="form-group">
+                                <label for="text">Buscar</label>
+                                <input type="text" id="text" ng-model="filter.search" class="form-control" placeholder="Buscar"
+                                    maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Categoria</label>
+                                <select ng-change="filter.operation = '0';" class="custom-select" id="category"
+                                    ng-model="filter.category">
+                                    <option value="0">Todas</option>
+                                    <option ng-repeat="category in categories" value="{{category.id}}">
+                                        {{category.name + ' ('+category.quantity_products+')'}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label for="year" ng-show="filter.category == 2">Año</label>
+                            <div class="row" ng-show="filter.category == 2">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" min="0" id="year" placeholder="Min" ng-model="filter.yearMin"
+                                            class="form-control" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" min="0" placeholder="Max" ng-model="filter.yearMax" class="form-control"
+                                            maxlength="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="kilometers" ng-show="filter.category == 2">Kilometros</label>
+                            <div class="row" ng-show="filter.category == 2">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" min="0" id="kilometers" placeholder="Min" ng-model="filter.kilometersMin"
+                                            class="form-control" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" min="0" placeholder="Max" ng-model="filter.kilometersMax"
+                                            class="form-control" maxlength="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="price">Precio</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" min="0" id="price" placeholder="Min" ng-model="filter.priceMin"
+                                            class="form-control" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" min="0" placeholder="Max" ng-model="filter.priceMax" class="form-control"
+                                            maxlength="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="operation">Operación</label>
+                                <select class="custom-select" id="operation" ng-model="filter.operation">
+                                    <option value="0">Todas</option>
+                                    <option value="1" ng-show="filter.category != 14">Compro</option>
+                                    <option value="2" ng-show="filter.category != 14">Vendo</option>
+                                    <option value="3" ng-show="filter.category == 10 || filter.category == 15 ">Alquilo</option>
+                                    <option value="4" ng-show="filter.category == 1 || filter.category == 0">Regalo</option>
+                                    <option value="5" ng-show="filter.category == 14 || filter.category == 0">Buscando
+                                        trabajo</option>
+                                    <option value="6" ng-show="filter.category == 14 || filter.category == 0">Ofreciendo
+                                        un trabajo</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" ng-show="filter.category != 0 && filter.category != 1 && filter.category != 10 && filter.category != 14">
+                                <label for="state">Estado</label>
+                                <select class="custom-select" id="state" ng-model="filter.state">
+                                    <option value="0">Todos</option>
+                                    <option value="1">Usado</option>
+                                    <option value="2">Nuevo</option>
+                                </select>
+                            </div>
+                            <a href ng-click="btnFilter();" class="btn btn-info btn-action">Filtrar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9">
+                <div class="title-articles header-yd">
+                    <div class="row">
+                        <div class="col-12">
+                            Avisos clasificados {{((categoryTitle != '0') ? ' > ' + categories[categoryTitle].name :
+                            '') }}
+                        </div>
+                    </div>
+                </div>
+                <loading ng-show="loadingArticles" margin="10"></loading>
+                <div ng-show="articles.length == 0 && !loadingArticles" class="no-articles">
+                    <p>
+                        No hay publicaciones que coincidan con tu búsqueda.
+                    </p>
+                    <ul class="list">
+                        <li>Revisá la ortografía de la palabra.</li>
+                        <li>Utilizá palabras más genéricas o menos palabras.</li>
+                        <li>Resetee el filtro <a href ng-click="resetFilter();">aqui</a> para reiniciar la
+                            busqueda.</li>
+                    </ul>
+                </div>
+                <view-article ng-hide="loadingArticles" ng-repeat="article in articles" article="article" user="{{userData.id}}"></view-article>
+                <div ng-hide="loadingArticles || hideBtn">
+                    <a class="btn btn-info btn-action mt-4" ng-hide="loadBtnData" href ng-click="loadData();">
+                        Cargar mas
+                    </a>
+                    <loading ng-show=" loadBtnData" size="fa-2x" margin="2"></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
