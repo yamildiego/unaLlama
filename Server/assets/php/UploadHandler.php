@@ -25,10 +25,10 @@ class UploadHandler
         6 => 'Missing a temporary folder',
         7 => 'Failed to write file to disk',
         8 => 'A PHP extension stopped the file upload',
-        'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
-        'max_file_size' => 'File is too big',
-        'min_file_size' => 'File is too small',
-        'accept_file_types' => 'Filetype not allowed',
+        'post_max_size' => 'El archivo es demasiado grande - php.ini',
+        'max_file_size' => 'El archivo es demasiado grande',
+        'min_file_size' => 'El archivo es demasiado pequeño',
+        'accept_file_types' => 'Tipo de archivo no permitido',
         'max_number_of_files' => 'Maximum number of files exceeded',
         'max_width' => 'Image exceeds maximum width',
         'min_width' => 'Image requires a minimum width',
@@ -115,7 +115,7 @@ class UploadHandler
             'replace_dots_in_filenames' => '-',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
-            'max_file_size' => null,
+            'max_file_size' => 1500000,
             'min_file_size' => 1,
             // The maximum number of files for the upload directory:
             'max_number_of_files' => null,

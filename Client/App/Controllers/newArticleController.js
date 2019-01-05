@@ -1,33 +1,52 @@
-app.controller('newArticleController', function ($scope, $http, Constants, AuthService, $window, $timeout, $rootScope) {
-    $scope.loading = true;
-    $scope.successful = false;
-    $scope.seconds = 5;
-    $scope.options = {
-        url: '../Server/assets/php/'
-    };
-    $scope.loadingFiles = false;
-    $scope.dataArticle = { photos: [] };
+app.controller('newArticleController', function ($scope, $http, Constants, AuthService, $window, $timeout, $rootScope, Popeye) {
+    $scope.initialize = function () {
+        $scope.loading = true;
+        $scope.successful = false;
+        $scope.seconds = 5;
+        $scope.options = { url: '../Server/assets/php/' };
+        $scope.loadingFiles = false;
+        $scope.dataArticle = { photos: [] };
+        $scope.loadImages = false;
+        $scope.tp = "";
 
+        AuthService.checkAuthInside().then(function (response) {
+            $rootScope.$broadcast("connected", response.data.status);
+            $scope.userData = response.data.data;
+            $scope.loading = false;
+            $scope.categories = $scope.$parent.categories;
+        }, function (response) {
+            $rootScope.$broadcast("disconnected", response.data.status);
+            if (response.data.status == "session_expired") {
+                $window.location.href = Constants.FRONTURL + '#!/login/publicar-anuncio';
+            }
+        });
+
+        $scope.anio = (new Date).getFullYear();
+        $scope.form = { title: "", description: "", category: "0", price: "", year: $scope.anio, kilometers: 0, photos: [] };
+    }
 
     $scope.destroy = function (name) {
         $http.get(Constants.APIURL + 'ArticleController/deletePhoto/' + name).then();
     }
 
-    AuthService.checkAuthInside().then(function (response) {
-        $rootScope.$broadcast("connected", response.data.status);
-        $scope.userData = response.data.data;
-        $scope.loading = false;
-        $scope.categories = $scope.$parent.categories;
-    }, function (response) {
-        $rootScope.$broadcast("disconnected", response.data.status);
-        if (response.data.status == "session_expired") {
-            $window.location.href = Constants.FRONTURL + '#!/login/publicar-anuncio';
-        }
-    });
+    $scope.loadTp = function () {
+        $timeout(function () {
+            if ($scope.tp.length >= 3) {
+                $scope.tp = ""
+            } else {
+                $scope.tp += "."
+            }
+            $scope.loadTp();
+        }, 500)
+    }
 
-    $scope.anio = (new Date).getFullYear();
-    $scope.form = { title: "", description: "", category: "0", price: "", year: $scope.anio, kilometers: 0, photos: [] };
     $scope.newArticle = function () {
+        $scope.loadImages = true;
+        $scope.loadTp();
+        $scope.confirmNewArticle();
+    }
+
+    $scope.confirmNewArticle = function () {
         var pictures = angular.copy($scope.dataArticle.photos);
         $scope.form.photos = preparatedPhotos(pictures);
 
@@ -51,6 +70,22 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
                         $window.location.href = Constants.FRONTURL + '#!/login/publicar-anuncio';
                     }
                 });
+        }
+    }
+
+    $scope.checkNewArticle = function () {
+        var isLoading = false;
+        $scope.dataArticle.photos.forEach(function (file) {
+            //TODO VER COMO HACERA
+            // if ((file.$state instanceof Function) && (file.$state() == "pending") && file.size < 1500000) {
+            // isLoading = true;
+            // }
+        });
+
+        if (isLoading === false) {
+            $scope.confirmNewArticle();
+        } else {
+            $timeout(function () { $scope.checkNewArticle(); }, 500);
         }
     }
 
@@ -82,4 +117,6 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
 
         return photos;
     }
+
+    $scope.initialize();
 });

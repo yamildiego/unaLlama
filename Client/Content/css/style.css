@@ -322,3 +322,7 @@ h1, h2, h3, h4, h5 {
     background-color: #333333;
     color: #FBCC23;
 }
+
+.file-error {
+    padding: 5px!important;
+}
