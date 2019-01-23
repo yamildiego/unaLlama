@@ -4,6 +4,10 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         $scope.loading = true;
         $scope.seconds = 5;
         $scope.dataArticle = { photos: [] };
+        $scope.sent = false;
+        $scope.loadImages = false;
+        $scope.tp = "";
+
         $scope.options = {
             url: '../Server/assets/php/'
         };
@@ -58,7 +62,24 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         return (item.forRemove === undefined);
     };
 
+    $scope.loadTp = function () {
+        $timeout(function () {
+            if ($scope.tp.length >= 3) {
+                $scope.tp = ""
+            } else {
+                $scope.tp += "."
+            }
+            $scope.loadTp();
+        }, 500)
+    }
+
     $scope.editArticle = function () {
+        $scope.loadImages = true;
+        $scope.loadTp();
+        $scope.checkEditArticle();
+    }
+
+    $scope.confirmEditArticle = function () {
         $scope.loading = true;
 
         var fm = angular.copy($scope.form);
@@ -95,6 +116,24 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
             }, 1000);
         }
     }
+
+    $scope.checkEditArticle = function () {
+        var isLoading = false;
+        $scope.dataArticle.photos.forEach(function (file) {
+            if ((file.$state instanceof Function) && (file.$state() == "pending")) {
+                isLoading = true;
+            }
+        });
+
+        if (!$scope.sent)
+            if (isLoading === false) {
+                $scope.sent = true;
+                $scope.confirmEditArticle();
+            } else {
+                $timeout(function () { $scope.checkEditArticle(); }, 500);
+            }
+    }
+
 
     function preparatedPhotos(photos) {
         photos.forEach(function (element, index) {

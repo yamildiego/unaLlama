@@ -8,6 +8,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         $scope.dataArticle = { photos: [] };
         $scope.loadImages = false;
         $scope.tp = "";
+        $scope.sent = false;
 
         AuthService.checkAuthInside().then(function (response) {
             $rootScope.$broadcast("connected", response.data.status);
@@ -43,7 +44,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
     $scope.newArticle = function () {
         $scope.loadImages = true;
         $scope.loadTp();
-        $scope.confirmNewArticle();
+        $scope.checkNewArticle();
     }
 
     $scope.confirmNewArticle = function () {
@@ -76,18 +77,18 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
     $scope.checkNewArticle = function () {
         var isLoading = false;
         $scope.dataArticle.photos.forEach(function (file) {
-            //TODO VER COMO HACERA
-            
-            // if ((file.$state instanceof Function) && (file.$state() == "pending") && file.size < 1500000) {
-            // isLoading = true;
-            // }
+            if ((file.$state instanceof Function) && (file.$state() == "pending")) {
+                isLoading = true;
+            }
         });
 
-        if (isLoading === false) {
-            $scope.confirmNewArticle();
-        } else {
-            $timeout(function () { $scope.checkNewArticle(); }, 500);
-        }
+        if (!$scope.sent)
+            if (isLoading === false) {
+                $scope.sent = true;
+                $scope.confirmNewArticle();
+            } else {
+                $timeout(function () { $scope.checkNewArticle(); }, 500);
+            }
     }
 
     $scope.end = function () {
