@@ -11,10 +11,10 @@
                 <td style="padding: 10px 0 30px 0;">
                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="700" style="border: 1px solid #cccccc; border-collapse: collapse;">
                         <tr>
-                            <td width="49%" align="right" bgcolor="#61A4FF" style="padding: 20px 0 20px 0; color: #fff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                            <td width="49%" align="right" bgcolor="#FBCC23" style="padding: 10px 0 10px 0; color: #fff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
                               <img src="<?php echo $this->config->item('logo_thumbnail'); ?>" alt="<?php echo $this->config->item('name_web'); ?>" width="100" />
                             </td>
-                            <td align="center" bgcolor="#61A4FF" style="padding: 20px 0px 20px 15px;color: #fff;font-size: 28px;font-weight: bold;font-family: Arial, sans-serif;text-align: left;">
+                            <td align="center" bgcolor="#FBCC23" style="padding: 20px 0px 20px 15px;color: #fff;font-size: 28px;font-weight: bold;font-family: Arial, sans-serif;text-align: left;">
                                 Una Llama
                             </td>
                         </tr>
@@ -40,7 +40,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td bgcolor="#61A4FF" style="padding: 30px 30px 30px 30px;" colspan="2">
+                            <td bgcolor="#FBCC23" style="padding: 10px 10px 10px 10px;" colspan="2">
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tr>
                                         <td style="color: #fff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">

@@ -23,9 +23,9 @@
                 <button type="button" class="btn btn-outline-info btn-sm" ng-click="back()">Volver</button>
             </h2>
             <p>
-                Usuario: yamildiego
+                Usuario: {{(article.user.username!= null)? article.user.username : article.user.name }}
                 <small>
-                    <a href="#!/perfil/{{article.userId}}">Ver perfil</a>
+                    <a href="#!/perfil/{{article.user.id}}">Ver perfil</a>
                 </small>
             </p>
         </div>

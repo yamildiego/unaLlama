@@ -115,7 +115,7 @@ class UploadHandler
             'replace_dots_in_filenames' => '-',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
-            'max_file_size' => 1500000,
+            'max_file_size' => 2000000,
             'min_file_size' => 1,
             // The maximum number of files for the upload directory:
             'max_number_of_files' => null,
@@ -1390,7 +1390,33 @@ class UploadHandler
             }
             $this->body($json);
         }
+
+        foreach ($content['files'] as $ff) {
+            if($ff->size >= 200000){
+                $this->compress('./files/' . $ff->name, './files/lowq/' . $ff->name, 95);
+                $ff->url = str_replace($ff->name, 'lowq/' . $ff->name, $ff->url);
+            }
+        }
+
         return $content;
+    }
+
+    public function compress($source, $destination, $quality)
+    {
+
+        $info = getimagesize($source);
+
+        if ($info['mime'] == 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+        } elseif ($info['mime'] == 'image/gif') {
+            $image = imagecreatefromgif($source);
+        } elseif ($info['mime'] == 'image/png') {
+            $image = imagecreatefrompng($source);
+        }
+
+        imagejpeg($image, $destination, $quality);
+
+        return $destination;
     }
 
     public function get_response()

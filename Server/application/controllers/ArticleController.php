@@ -417,9 +417,9 @@ class ArticleController extends REST_Controller
                         'viewed' => $article->getViewed(),
                         'operation' => $article->getOperation() . '',
                         'state' => $article->getState() . '',
-                        'userId' => $article->getUser()->getId(),
                         'isPublished' => ($date->format('Y-m-d H:i:s') > $today->format('Y-m-d H:i:s')),
                         'date_publication' => $article->getDatePublication()->getTimestamp(),
+                        'user' => array('id'=>$article->getUser()->getId(), 'name' => $article->getUser()->getName(), 'username' => $article->getUser()->getUsername()),
                         'date_creation' => $article->getDateCreation()->getTimestamp());
 
                     if ($articleData["categoryId"] == "2") {

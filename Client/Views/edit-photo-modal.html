@@ -9,10 +9,15 @@
                         {{(((photo != 'user.png') || (queue.length >= 1))?'Modificar':
                         'Agregar')}} foto
                     </span>
-                    <input type="file" name="files">
+                    <input type="file" name="files" ng-click="updateNeverSend()">
                 </span>
                 <span class="fileupload-process"></span>
             </div>
+        </div>
+        <span ng-hide="true">{{qq.data = queue}}</span>
+        <div ng-repeat="a in queue" ng-show="a.$state() == 'pending'">
+            <loading ng-show="true" margin="2"></loading>
+            <div class="text-center">Cargando</div>
         </div>
         <div class="row mt-4 text-center" ng-hide="queue.length >= 1">
             <div class="col-12 mx-auto" ng-hide="photo == 'user.png'">
@@ -28,10 +33,14 @@
                 <span ng-hide="true">{{dataArticle.photos = queue}}</span>
                 <img class="img-fluid" ng-src="{{file.url}}" alt="{{file.url}}">
             </div>
+            <strong ng-show="file.size >= 2000000" class="error file-error text-danger">
+                El archivo es demasiado grande
+            </strong>
+            <strong ng-show="file.error && (2000000 > file.size)" class="error file-error text-danger">{{file.error}}</strong>
         </div>
         <div class="row mt-4 text-center">
             <div class="col-12  mx-auto">
-                <a href class="btn btn-info" ng-class="{'disabled':queue.length == 0}" ng-click="ok()">Actualizar</a>
+                <a href class="btn btn-info" ng-hide="isLoading() || (neverSend != 2)" ng-click="ok()">Actualizar</a>
                 <a href class="btn btn-secondary" ng-click="$close()">Cancelar</a>
             </div>
         </div>

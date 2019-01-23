@@ -77,6 +77,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         var isLoading = false;
         $scope.dataArticle.photos.forEach(function (file) {
             //TODO VER COMO HACERA
+            
             // if ((file.$state instanceof Function) && (file.$state() == "pending") && file.size < 1500000) {
             // isLoading = true;
             // }

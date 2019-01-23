@@ -482,8 +482,10 @@ class UserController extends REST_Controller
 
     public function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
+        $p_email_from = 'yamildiego91@gmail.com';
         $this->load->library('email');
-        $this->email->from($p_email_from, $this->config->item('name_web'));
+        $this->email->initialize();
+        $this->email->from($p_email_from, 'Unallama');
         $this->email->to($p_email_to);
         $this->email->subject($p_subject);
         $this->email->message($p_message);

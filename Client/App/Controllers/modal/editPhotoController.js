@@ -1,4 +1,6 @@
-app.controller('editPhotoController', function ($scope, $http, Constants, $rootScope, AuthService, userId, photo) {
+app.controller('editPhotoController', function ($scope, $http, Constants, $rootScope, AuthService, userId, $timeout, photo) {
+    $scope.qq = { "data": [] };
+
     $scope.initialize = function () {
         $scope.photo = photo;
         AuthService.checkAuthInside().then(function (response) {
@@ -7,13 +9,41 @@ app.controller('editPhotoController', function ($scope, $http, Constants, $rootS
             $rootScope.$broadcast("disconnected", response.data.status);
         });
         $scope.loadForm = false;
-        // $scope.form = { password: "", newPassword: "", repeaNewPassword: "" };
         $scope.successful = false;
         $scope.dataArticle = { photos: [] };
-
         $scope.options = {
             url: '../Server/assets/php/'
         };
+
+        $scope.neverSend = 0;
+    }
+
+    $scope.updateNeverSend = function () {
+        $timeout(function () {
+            $scope.neverSend = 1;
+        }, 2000);
+    }
+
+    $scope.iEjecuted = false;
+    $scope.isLoading = function () {
+        var status = false;
+        $scope.qq.data.forEach(element => {
+            if ((element.$state instanceof Function) && (element.$state() == "pending")) {
+                $scope.iEjecuted = true;
+                status = true;
+            }
+
+            if ($scope.iEjecuted && (element.error != undefined)) {
+                $scope.iEjecuted = false;
+            }
+        });
+
+        if (!status && $scope.iEjecuted == 1 && $scope.neverSend == 1) {
+            $timeout(function () {
+                $scope.neverSend = 2;
+            }, 1500);
+        }
+        return status;
     }
 
     $scope.ok = function () {

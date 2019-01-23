@@ -8,31 +8,43 @@ class Home extends REST_Controller
 
     public function index_get()
     {
-        $this->load->library('email');
-        $config = array();
-        $config['protocol'] = 'ssmtp';
-        $config['smtp_host'] = 'ssl://smtp.gmail.com';
-        $config['smtp_port'] = '465';
-        $config['smtp_timeout'] = '7';
-        $config['smtp_user'] = 'yamildiego91@gmail.com';
-        $config['smtp_pass'] = 'uouam6tqvp';
-        $config['charset'] = 'utf-8';
-        $config['newline'] = "\r\n";
-        $config['mailtype'] = 'text'; // or html
-        $config['validation'] = true; // bool whether to validate email or not
-        $this->email->initialize($config);
-        $this->email->from('yamildiego91@gmail.com', 'Yamil Diego');
-        $this->email->to('yamildiego@gmail.com');
-        $this->email->subject('Email Test');
-        $this->email->message('Testing the email class.');
-        $a = $this->email->send();
-        
-        var_dump($a);
+        // $this->load->library('email');
+        // $this->email->initialize();
+        // $this->email->from('yamildiego91@gmail.com', 'Yamil Diego');
+        // $this->email->to('yamildiego@gmail.com');
+        // $this->email->subject('Email Test');
+        // $this->email->message('Testing the email class.');
+        // $a = $this->email->send();
 
-        echo $this->email->print_debugger();
+        $source_img = 'source.jpg';
+
+        $this->compress('./assets/php/files/7da96dcd4acf0e1f87cb7256156dc15a.png', './assets/php/files/nq/ss.jpg', 95);
+
+        // $destination_img = 'destination.jpg';
+
+        // $d = compress($source_img, $destination_img, 90);
+
         // $doc = new Doctrine();
         // $doc->generate_classes();
         // $this->response("OK", REST_Controller::HTTP_OK); // OK (200)
+    }
+
+    public function compress($source, $destination, $quality)
+    {
+
+        $info = getimagesize($source);
+
+        if ($info['mime'] == 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+        } elseif ($info['mime'] == 'image/gif') {
+            $image = imagecreatefromgif($source);
+        } elseif ($info['mime'] == 'image/png') {
+            $image = imagecreatefrompng($source);
+        }
+
+        imagejpeg($image, $destination, $quality);
+
+        return $destination;
     }
 
     public function sendMsg_post()
@@ -73,20 +85,19 @@ class Home extends REST_Controller
 
     public function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
+        $p_email_from = 'yamildiego91@gmail.com';
         $this->load->library('email');
         $this->email->initialize();
-        $this->email->set_mailtype("html");
         $this->email->from($p_email_from, 'Unallama');
         $this->email->to($p_email_to);
         $this->email->subject($p_subject);
         $this->email->message($p_message);
         $a = $this->email->send();
 
-        // if (!$a) {
-        echo $this->email->print_debugger();
-        // }
-        die;
-        // return $a;
+        if (!$a) {
+            echo $this->email->print_debugger();
+        }
+        return $a;
     }
 
 }

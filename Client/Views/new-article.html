@@ -95,7 +95,7 @@
                     <input type="email" id="email" ng-model="form.email" class="form-control">
                 </div>
             </form>
-            <span class="small">Las imagenes no puede pesar mas de 1.5mb</span>
+            <span class="small">Las imagenes no puede pesar mas de 2mb</span>
             <form id="fileupload" method="POST" file-upload="options" enctype="multipart/form-data" ng-class="{'fileupload-processing': processing() || loadingFiles}">
                 <div class="row fileupload-buttonbar">
                     <div class="col-lg-7">
@@ -136,10 +136,10 @@
                                 </span>
                                 <span ng-switch-default>{{'Imagen-' + ($index + 1)}}</span>
                             </p>
-                            <strong ng-show="file.size >= 1500000" class="error file-error text-danger">
+                            <strong ng-show="file.size >= 2000000" class="error file-error text-danger">
                                 El archivo es demasiado grande
                             </strong>
-                            <strong ng-show="file.error && (1500000 > file.size)" class="error file-error text-danger">{{file.error}}</strong>
+                            <strong ng-show="file.error && (2000000 > file.size)" class="error file-error text-danger">{{file.error}}</strong>
                         </td>
                         <td>
                             <p class="size">{{file.size | formatFileSize}}</p>
