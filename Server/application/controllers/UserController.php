@@ -480,7 +480,7 @@ class UserController extends REST_Controller
         return $user;
     }
 
-    public function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
+    private function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
         $p_email_from = 'yamildiego91@gmail.com';
         $this->load->library('email');

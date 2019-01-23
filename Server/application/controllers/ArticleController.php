@@ -419,7 +419,7 @@ class ArticleController extends REST_Controller
                         'state' => $article->getState() . '',
                         'isPublished' => ($date->format('Y-m-d H:i:s') > $today->format('Y-m-d H:i:s')),
                         'date_publication' => $article->getDatePublication()->getTimestamp(),
-                        'user' => array('id'=>$article->getUser()->getId(), 'name' => $article->getUser()->getName(), 'username' => $article->getUser()->getUsername()),
+                        'user' => array('id' => $article->getUser()->getId(), 'name' => $article->getUser()->getName(), 'username' => $article->getUser()->getUsername()),
                         'date_creation' => $article->getDateCreation()->getTimestamp());
 
                     if ($articleData["categoryId"] == "2") {
@@ -909,8 +909,13 @@ class ArticleController extends REST_Controller
                 $data = array('status' => "OK");
                 $this->Comment_model->save($newComment);
 
-                $this->response($data, REST_Controller::HTTP_OK); // OK (200)
+                $statusEmail = $this->_send_email($this->config->item('email_noreply'), $article->getUser()->getEmail(), $this->load->view('email/emailComment_view', array('msg' => $text, 'title' => $article->getTitle(), 'name' => $article->getUser()->getName(), 'link' => $this->config->item('url_frontend') . '#!/ver-anuncio/' . $article->getId()), true), 'Nueva consulta en  ' . $article->getTitle());
 
+                if ($statusEmail) {
+                    $this->response($data, REST_Controller::HTTP_OK); // OK (200)
+                } else {
+                    throw new Exception('unexpected_error');
+                }
             } else {
                 throw new Exception('unexpected_error');
             }
@@ -970,4 +975,15 @@ class ArticleController extends REST_Controller
         return (($filteredCollection->count() == 0) ? null : $filteredCollection->first());
     }
 
+    private function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
+    {
+        $p_email_from = 'yamildiego91@gmail.com';
+        $this->load->library('email');
+        $this->email->initialize();
+        $this->email->from($p_email_from, 'Unallama');
+        $this->email->to($p_email_to);
+        $this->email->subject($p_subject);
+        $this->email->message($p_message);
+        return $this->email->send();
+    }
 }
