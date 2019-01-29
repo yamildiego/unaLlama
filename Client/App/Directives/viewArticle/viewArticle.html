@@ -8,8 +8,9 @@
                 <div class="col-md-3 my-col-3">
                     <i class="fas fa-chevron-left arrow left-arrow" ng-show="article.photos.length > 1" ng-click="getBack(article)"></i>
                     <i class="fas fa-chevron-right arrow right-arrow" ng-show="article.photos.length > 1" ng-click="getNext(article)"></i>
-                    <img ng-class="{'pointer':(article.photos[(article.indexPhoto) ? article.indexPhoto : 0].thumbnail !== './Content/images/default-image.png')}"
-                        ng-click="openPhoto(article.photos, article.indexPhoto)" class="card-img-top" ng-src="{{(article.photos.length > 0)? article.photos[(article.indexPhoto) ? article.indexPhoto : 0].thumbnail: './Content/images/default-image.png'}}">
+                    <img ng-repeat="photo in article.photos" ng-class="{'pointer':(article.photos[(article.indexPhoto) ? article.indexPhoto : 0].thumbnail !== './Content/images/default-image.png')}"
+                        ng-click="openPhoto(article.photos, article.indexPhoto)" class="card-img-top" ng-show="(article.indexPhoto == $index || (article.indexPhoto == null && $index == 0)) "
+                        ng-src="{{photo.thumbnail}}">
                     <div class="choose-photo" ng-show="article.photos.length > 1">
                         <i class="fa-circle" ng-class="{far: ($index !== article.indexPhoto), fas: (($index == article.indexPhoto) || ((article.indexPhoto == null)  && ($index == 0)))}"
                             ng-repeat="photo in article.photos" ng-click="article.indexPhoto = $index;"></i>

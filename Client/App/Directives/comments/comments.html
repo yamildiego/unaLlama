@@ -1,59 +1,67 @@
 <any>
+    <style>
+        p {
+        margin-bottom: 0.5rem;
+    }
+    </style>
     <loading ng-show="load" margin="2"></loading>
     <div ng-hide="load" class="row">
         <div class="col-10 mx-auto">
             <a class="btn btn-primary btn-action" href ng-if="limitComments != 0" ng-click="loadMore();">Cargar más
                 comentarios</a>
             <div class="card mt-2" ng-repeat="comment in comments" ng-if="$index >= limitComments ">
-                <div class="card-body">
+                <div class="card-body" style="padding:.75rem;">
                     <div class="row">
-                        <div class="col-md-2 text-center">
+                        <div class="col-md-1 text-center">
                             <img style="max-height: 60px;" ng-src="{{ ((comment.user.photo.indexOf('/') != -1) ? comment.user.photo : ('../Server/assets/php/files/thumbnail/' + comment.user.photo))}}"
                                 class="rounded-circle img-fluid" />
-                            <p class="text-secondary text-center">
-                                <p class="text-secondary text-center" am-time-ago="comment.date + '006'"></p>
-                            </p>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <p>
                                 <strong>{{comment.user.name}}</strong>
+                                <span class="text-secondary text-center" am-time-ago="comment.date + '006'"></span>
                             </p>
                             <div class="clearfix"></div>
                             <long-text data="comment.message"></long-text>
+                            <div ng-show="comment.reply" class="row" ng-if="edit">
+                                <div class="col-8 mx-auto">
+                                    <p ng-show="sentMsg" class="alert alert-success mt-3">La consulta se envio con
+                                        éxito.</p>
+                                    <loading ng-show="loading" margin="2" size="fa-2x"></loading>
+                                    <form class="mt-3" autocomplete="off" ng-hide="loading">
+                                        <div class="form-group">
+                                            <label>Respuesta</label>
+                                            <textarea class="form-control" ng-model="comment.msg" focus-me="{{comment.focusMe}}"
+                                                rows="2"></textarea>
+                                        </div>
+                                        <button type="button" ng-click="sendComment(comment);" class="btn btn-primary">Enviar</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <p>
-                                <a ng-if="edit" class="float-right btn btn-outline-primary ml-2" href ng-click="setReplyComment(comment, null);">
+                                <button ng-if="edit && (user != null) && (article.user.id == user.id) && comment.replys.length == 0"
+                                    class="float-right btn btn-outline-primary ml-2" ng-click="setReplyComment(comment);">
                                     <i class="fa fa-reply"></i>
                                     Responder
-                                </a>
+                                </button>
                             </p>
                         </div>
                     </div>
-                    <a class="btn btn-primary btn-action" ng-if="comment.limitComments > 0" href ng-click="comment.limitComments = (comment.limitComments-1)">
-                        Cargar más comentarios
-                    </a>
-                    <div class="card card-inner mt-2" ng-if="$index >= comment.limitComments" ng-repeat="reply in comment.replys">
-                        <div class="card-body" style="padding: 0.25rem">
+                    <div class="card card-inner mt-2" ng-repeat="reply in comment.replys">
+                        <div class="card-body" style="padding: 0.55rem 0.55rem 0 0.55rem">
                             <div class="row">
-                                <div class="col-md-2 text-center">
+                                <div class="col-md-1 text-center">
                                     <img style="max-height: 60px;" ng-src="{{ ((reply.user.photo.indexOf('/') != -1) ? reply.user.photo : ('../Server/assets/php/files/thumbnail/' + reply.user.photo))}}"
                                         class="rounded-circle img-fluid" />
-                                    <p class="text-secondary text-center" am-time-ago="reply.date + '006'"></p>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-11">
                                     <p>
                                         <strong>{{reply.user.name}}</strong>
+                                        <span class="text-secondary text-center" am-time-ago="reply.date + '006'"></span>
                                     </p>
                                     <long-text data="reply.message"></long-text>
-                                </div>
-                                <div class="col-md-2">
-                                    <p>
-                                        <a ng-if="edit" class="float-right btn btn-outline-primary ml-2" href ng-click="setReplyComment(comment, reply);">
-                                            <i class="fa fa-reply"></i>
-                                            Responder
-                                        </a>
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -65,12 +73,13 @@
     <div ng-hide="load" class="row" ng-if="edit">
         <div class="col-8 mx-auto">
             <p ng-show="sentMsg" class="alert alert-success mt-3">La consulta se envio con éxito.</p>
-            <form class="mt-3" autocomplete="off" id="query">
+            <loading ng-show="loading" margin="2" size="fa-2x"></loading>
+            <form class="mt-3" autocomplete="off" ng-hide="loading">
                 <div class="form-group">
                     <label for="query">Consulta</label>
-                    <textarea class="form-control" ng-model="form.msg" focus-me="{{focusMe}}" id="query" rows="3"></textarea>
+                    <textarea class="form-control" ng-model="form.msg" focus-me="{{focusMe}}" rows="3"></textarea>
                 </div>
-                <button type="button" ng-click="sendComment();" class="btn btn-primary">Enviar</button>
+                <button ng-disabled="form.msg.length == 0" type="button" ng-click="sendComment();" class="btn btn-primary">Enviar</button>
             </form>
         </div>
     </div>

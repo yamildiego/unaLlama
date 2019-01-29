@@ -150,7 +150,7 @@ class ArticleController extends REST_Controller
 
                 foreach ($article->getPhotos() as $photo) {
                     $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                    $path = "../Server/assets/php/files/";
+                    $path = "../Server/assets/php/files/lowq/";
                     if (file_exists($path . $photo->getName())) {
                         $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                     }
@@ -196,7 +196,7 @@ class ArticleController extends REST_Controller
 
                 foreach ($article->getPhotos() as $photo) {
                     $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                    $path = "../Server/assets/php/files/";
+                    $path = "../Server/assets/php/files/lowq/";
                     if (file_exists($path . $photo->getName())) {
                         $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                     }
@@ -241,7 +241,7 @@ class ArticleController extends REST_Controller
 
                 foreach ($article->getPhotos() as $photo) {
                     $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                    $path = "../Server/assets/php/files/";
+                    $path = "../Server/assets/php/files/lowq/";
                     if (file_exists($path . $photo->getName())) {
                         $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                     }
@@ -287,7 +287,7 @@ class ArticleController extends REST_Controller
 
                 foreach ($article->getPhotos() as $photo) {
                     $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                    $path = "../Server/assets/php/files/";
+                    $path = "../Server/assets/php/files/lowq/";
                     if (file_exists($path . $photo->getName())) {
                         $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                     }
@@ -431,7 +431,7 @@ class ArticleController extends REST_Controller
 
                     foreach ($article->getPhotos() as $photo) {
                         $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                        $path = "../Server/assets/php/files/";
+                        $path = "../Server/assets/php/files/lowq/";
                         if (file_exists($path . $photo->getName())) {
                             $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                         }
@@ -483,7 +483,7 @@ class ArticleController extends REST_Controller
 
                 foreach ($article->getPhotos() as $photo) {
                     $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                    $path = "../Server/assets/php/files/";
+                    $path = "../Server/assets/php/files/lowq/";
                     if (file_exists($path . $photo->getName())) {
                         $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                     }
@@ -544,7 +544,7 @@ class ArticleController extends REST_Controller
 
                 foreach ($article->getPhotos() as $photo) {
                     $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                    $path = "../Server/assets/php/files/";
+                    $path = "../Server/assets/php/files/lowq/";
                     if (file_exists($path . $photo->getName())) {
                         $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                     }
@@ -724,7 +724,7 @@ class ArticleController extends REST_Controller
 
                     foreach ($article->getPhotos() as $photo) {
                         $pathThumbnail = "../Server/assets/php/files/thumbnail/";
-                        $path = "../Server/assets/php/files/";
+                        $path = "../Server/assets/php/files/lowq/";
                         if (file_exists($path . $photo->getName())) {
                             $photos[] = array('thumbnail' => $pathThumbnail . $photo->getName(), 'original' => $path . $photo->getName());
                         }
@@ -909,8 +909,11 @@ class ArticleController extends REST_Controller
                 $data = array('status' => "OK");
                 $this->Comment_model->save($newComment);
 
-                $statusEmail = $this->_send_email($this->config->item('email_noreply'), $article->getUser()->getEmail(), $this->load->view('email/emailComment_view', array('msg' => $text, 'title' => $article->getTitle(), 'name' => $article->getUser()->getName(), 'link' => $this->config->item('url_frontend') . '#!/ver-anuncio/' . $article->getId()), true), 'Nueva consulta en  ' . $article->getTitle());
-
+                if ($commentId == null) {
+                    $statusEmail = $this->_send_email($this->config->item('email_noreply'), $article->getUser()->getEmail(), $this->load->view('email/emailComment_view', array('msg' => $text, 'title' => $article->getTitle(), 'name' => $article->getUser()->getName(), 'link' => $this->config->item('url_frontend') . '#!/ver-anuncio/' . $article->getId()), true), 'Nueva consulta en  ' . $article->getTitle());
+                } else {
+                    $statusEmail = $this->_send_email($this->config->item('email_noreply'), $comment->getUser()->getEmail(), $this->load->view('email/emailCommentAnswer_view', array('query' => $comment->getMessage(), 'msg' => $text, 'title' => $article->getTitle(), 'name' => $comment->getUser()->getName(), 'link' => $this->config->item('url_frontend') . '#!/ver-anuncio/' . $article->getId()), true), 'Respondieron tu consulta sobre  ' . $article->getTitle());
+                }
                 if ($statusEmail) {
                     $this->response($data, REST_Controller::HTTP_OK); // OK (200)
                 } else {

@@ -26,5 +26,6 @@
     <i class="fa fa-chevron-right"></i>
 </a>
 <div class="d-block mx-auto">
-    <img ng-src="{{photos[indexPhoto].original}}" class="img-fluid d-block mx-auto" alt="Responsive image"></img>
+    <img ng-repeat="photo in photos" class="img-fluid d-block mx-auto" ng-show="(indexPhoto == $index || (indexPhoto == null && $index == 0)) "
+        ng-src="{{photo.original}}">
 </div>

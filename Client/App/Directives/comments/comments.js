@@ -1,16 +1,17 @@
-app.directive('comments', function ($location, $anchorScroll, $http, Constants, $timeout) {
+app.directive('comments', function ($http, Constants, $timeout) {
     return {
         restrict: 'E',
         replace: true,
         scope: {
             article: '=',
+            user: '=',
             edit: '='
         },
         link: function (scope) {
             scope.initialize = function () {
                 scope.load = true;
+                scope.loading = false;
                 scope.sentMsg = false;
-                scope.replyComment = null;
                 scope.commets = [];
                 scope.form = { msg: "" };
                 scope.limitComments = 0;
@@ -31,33 +32,29 @@ app.directive('comments', function ($location, $anchorScroll, $http, Constants, 
                     scope.limitComments = scope.limitComments - 2;
             }
 
-            scope.setReplyComment = function (comment, reply) {
-                scope.replyComment = comment;
-
-                if (reply == null)
-                    scope.form.msg = '@' + scope.replyComment.user.name + ' ';
-                else
-                    scope.form.msg = '@' + reply.user.name + ' ';
-
-                if ($location.hash() !== 'query') {
-                    $location.hash('query');
-                    scope.focusMe = true;
-                } else {
-                    $anchorScroll();
-                    scope.focusMe = true;
-                }
+            scope.setReplyComment = function (comment) {
+                scope.comments.forEach(function (e) {
+                    if (e.id == comment.id) {
+                        e.msg = '@' + comment.user.name + ' ';
+                        e.reply = true;
+                        e.focusMe = true;
+                    }
+                })
             }
 
-            scope.sendComment = function () {
-                var commentId = (scope.replyComment == null) ? null : scope.replyComment.id;
-                $http.post(Constants.APIURL + 'ArticleController/sendComment', { articleId: scope.article.id, commentId: commentId, text: scope.form.msg })
+            scope.sendComment = function (comment) {
+                scope.loading = true;
+                $http.post(Constants.APIURL + 'ArticleController/sendComment', { articleId: scope.article.id, commentId: (comment ? comment.id : null), text: (comment ? comment.msg : scope.form.msg) })
                     .then(function onSuccess(response) {
+                        scope.loading = false;
                         if (response.data.status == 'OK') {
                             scope.form.msg = "";
                             scope.sentMsg = true;
                             scope.loadComments();
                         }
-                    }, function onError(response) { });
+                    }, function onError(response) {
+                        scope.loading = false;
+                    });
             }
 
             scope.loadComments = function () {
@@ -65,12 +62,7 @@ app.directive('comments', function ($location, $anchorScroll, $http, Constants, 
                     .then(function onSuccess(response) {
                         if (response.data.status == 'OK') {
                             scope.comments = response.data.data;
-                            scope.limitComments = (response.data.data.length <= 2) ? 0 : (response.data.data.length - 2);
-
-                            scope.comments.forEach(function (element) {
-                                element.limitComments = (element.replys.length <= 1) ? 0 : (element.replys.length - 1);
-                            });
-
+                            scope.limitComments = (response.data.data.length <= 4) ? 0 : (response.data.data.length - 4);
                             scope.load = false;
                         }
                     }, function onError(response) {

@@ -1392,10 +1392,13 @@ class UploadHandler
         }
 
         foreach ($content['files'] as $ff) {
-            if($ff->size >= 200000){
+            if ($ff->size >= 200000) {
                 $this->compress('./files/' . $ff->name, './files/lowq/' . $ff->name, 95);
-                $ff->url = str_replace($ff->name, 'lowq/' . $ff->name, $ff->url);
+            } else {
+                copy('./files/' . $ff->name, './files/lowq/' . $ff->name);
             }
+
+            $ff->url = str_replace($ff->name, 'lowq/' . $ff->name, $ff->url);
         }
 
         return $content;
