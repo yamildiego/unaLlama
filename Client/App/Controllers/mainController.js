@@ -1,5 +1,6 @@
-app.controller('mainController', function ($scope, $http, AuthService, Constants, $location, $window, $route, $rootScope) {
+app.controller('mainController', function ($scope, $http, AuthService, Constants, $location, $window, $route, $rootScope, FaceService) {
     $scope.load = true;
+    FaceService.initialize();
 
     $rootScope.$on("disconnected", function (evt, data) {
         if (data === "session_expired") {

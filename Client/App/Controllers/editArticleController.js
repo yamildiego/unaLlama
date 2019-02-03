@@ -85,25 +85,35 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         var fm = angular.copy($scope.form);
         var pictures = preparatedPhotos(angular.copy($scope.dataArticle.photos));
 
-        delete fm["photos"];
-        fm.photos = pictures.concat($scope.form.photos);
-        fm.userId = $scope.userData.id;
+        if ($scope.form.photos.length > 5) {
+            $scope.loadImages = false;
+            $scope.sent = false;
+            $scope.errors = $scope.$parent.getErrors({ "status": "max_photo_limit" });
+        } else {
+            $scope.loading = true;
+            delete fm["photos"];
+            fm.photos = pictures.concat($scope.form.photos);
+            fm.userId = $scope.userData.id;
 
-        $http.post(Constants.APIURL + 'ArticleController/editArticle', fm)
-            .then(function onSuccess(response) {
-                if (response.data.status == 'OK') {
+            $http.post(Constants.APIURL + 'ArticleController/editArticle', fm)
+                .then(function onSuccess(response) {
+                    if (response.data.status == 'OK') {
+                        $scope.loading = false;
+                        $scope.successful = true;
+                        $scope.end(response.data.data);
+                    }
+                }, function onError(response) {
+                    $rootScope.$broadcast("disconnected", response.data.status);
+                    if (response.data.status == "session_expired") {
+                        $window.location.href = Constants.FRONTURL + '#!/login/mis-anuncios';
+                    } else {
+                        $scope.loadImages = false;
+                        $scope.sent = false;
+                    }
                     $scope.loading = false;
-                    $scope.successful = true;
-                    $scope.end(response.data.data);
-                }
-            }, function onError(response) {
-                $rootScope.$broadcast("disconnected", response.data.status);
-                if (response.data.status == "session_expired") {
-                    $window.location.href = Constants.FRONTURL + '#!/login/mis-anuncios';
-                }
-                $scope.loading = false;
-                $scope.errors = $scope.$parent.getErrors(response.data);
-            });
+                    $scope.errors = $scope.$parent.getErrors(response.data);
+                });
+        }
     }
 
     $scope.end = function (pId) {

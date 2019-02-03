@@ -2,6 +2,7 @@
 app.controller('loginController', function ($scope, $http, Constants, $window, $routeParams, $timeout, $rootScope, FaceService) {
 
     $scope.initialize = function () {
+        FaceService.initialize();
         $scope.loadForm = false;
         $scope.errors = [];
         $scope.form = { username: "", password: "" };
@@ -16,8 +17,10 @@ app.controller('loginController', function ($scope, $http, Constants, $window, $
 
                     $scope.loadForm = false;
 
+                    var paramId = (($routeParams.hasOwnProperty('id')) && $routeParams.id != null) ? '/' + $routeParams.id : '';
+
                     if ($routeParams.tab)
-                        $window.location.href = Constants.FRONTURL + '#!/' + $routeParams.tab;
+                        $window.location.href = Constants.FRONTURL + '#!/' + $routeParams.tab + paramId;
                     else
                         $window.location.href = Constants.FRONTURL;
                 }
@@ -39,8 +42,11 @@ app.controller('loginController', function ($scope, $http, Constants, $window, $
         FaceService.login(function (responseFB) {
             $timeout(function () {
                 $scope.loadForm = false;
+
+                var paramId = (($routeParams.hasOwnProperty('id')) && $routeParams.id != null) ? '/' + $routeParams.id : '';
+
                 if ($routeParams.tab)
-                    $window.location.href = Constants.FRONTURL + '#!/' + $routeParams.tab;
+                    $window.location.href = Constants.FRONTURL + '#!/' + $routeParams.tab + paramId;
                 else
                     $window.location.href = Constants.FRONTURL;
             });

@@ -29,11 +29,26 @@ class UserController extends REST_Controller
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'photo' => ($user->getPhoto() == null) ? 'user.png' : $user->getPhoto());
+        //TODO: SI LA IMAGEN NO EXISTE PONER USER.PNG
+        // 'photo' => ($user->getPhoto() == null || ($this->image_exists($user->getPhoto()) == 0)) ? 'user.png' : $user->getPhoto());
 
         $data['status'] = 'OK';
 
         $this->response($data, REST_Controller::HTTP_OK); // OK (200)
     }
+
+    // public function image_exists($url)
+    // {
+    //     try {
+    //         if (getimagesize($url)) {
+    //             return 1;
+    //         } else {
+    //             return 0;
+    //         }
+    //     } catch (Exception $ex) {
+    //         return 0;
+    //     }
+    // }
 
     public function getUserProfileData_get($id)
     {
@@ -482,7 +497,7 @@ class UserController extends REST_Controller
 
     private function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
-        $p_email_from = 'yamildiego91@gmail.com';
+        $p_email_from = 'info@unallama.com.ar';
         $this->load->library('email');
         $this->email->initialize();
         $this->email->from($p_email_from, 'Unallama');

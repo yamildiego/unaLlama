@@ -52,6 +52,8 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         $scope.form.photos = preparatedPhotos(pictures);
 
         if ($scope.form.photos.length > 5) {
+            $scope.loadImages = false;
+            $scope.sent = false;
             $scope.errors = $scope.$parent.getErrors({ "status": "max_photo_limit" });
         } else {
             $scope.loading = true;
@@ -69,6 +71,9 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
                     $rootScope.$broadcast("disconnected", response.data.status);
                     if (response.data.status == "session_expired") {
                         $window.location.href = Constants.FRONTURL + '#!/login/publicar-anuncio';
+                    } else {
+                        $scope.loadImages = false;
+                        $scope.sent = false;
                     }
                 });
         }

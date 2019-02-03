@@ -206,7 +206,7 @@ a:active, a:focus {
 @media (min-width: 1200px) {}
 
 .y-border-primary {
-    border: 1px solid #FBCC23;
+    border: 1px solid #337ab7;
     border-top: 0;
 }
 
@@ -244,17 +244,18 @@ a:active, a:focus {
 }
 
 .card {
-    border-color: #FBCC23;
+    border-color: #337ab7;
 }
 
 .navbar-yd {
     padding: 0 1rem 0 1rem;
     line-height: 45px;
-    background: #FBCC23!important;
+    background: #337ab7!important;
 }
 
 .active {
-    background: #ffe787!important;
+    background: #3656b4!important;
+    box-shadow: inset 0 0 44px #333;
 }
 
 h1, h2, h3, h4, h5 {
@@ -264,7 +265,7 @@ h1, h2, h3, h4, h5 {
 .header-yd {
     background: #fff;
     color: #c69500;
-    border-color: #FBCC23;
+    border-color: #337ab7;
 }
 
 .btns-home {
@@ -320,9 +321,19 @@ h1, h2, h3, h4, h5 {
 
 #navegador li a:hover {
     background-color: #333333;
-    color: #FBCC23;
+    color: #337ab7;
 }
 
 .file-error {
     padding: 5px!important;
+}
+
+.nav-link .link-bar {
+    color: #fff;
+    letter-spacing: 0.02rem;
+    font-family: 'Staatliches', cursive;
+}
+
+.link-bar:hover {
+    border-bottom: 2px solid #fbcc23;
 }

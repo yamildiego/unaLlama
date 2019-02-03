@@ -60,6 +60,11 @@ app.config(function ($routeProvider) {
             controller: 'loginController',
             activetab: 'login'
         })
+        .when('/login/:tab/:id', {
+            templateUrl: 'Views/login.html',
+            controller: 'loginController',
+            activetab: 'login'
+        })
         .when('/favoritos', {
             templateUrl: 'Views/favorites.html',
             controller: 'favoritesController',

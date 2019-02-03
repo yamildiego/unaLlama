@@ -25,16 +25,17 @@
                             <long-text data="comment.message"></long-text>
                             <div ng-show="comment.reply" class="row" ng-if="edit">
                                 <div class="col-8 mx-auto">
-                                    <p ng-show="sentMsg" class="alert alert-success mt-3">La consulta se envio con
-                                        éxito.</p>
-                                    <loading ng-show="loading" margin="2" size="fa-2x"></loading>
-                                    <form class="mt-3" autocomplete="off" ng-hide="loading">
+                                    <p ng-show="comment.sentMsg" class="alert alert-success mt-3">
+                                        La respuesta se envio con éxito.
+                                    </p>
+                                    <loading ng-show="comment.loading" margin="2" size="fa-2x"></loading>
+                                    <form class="mt-3" autocomplete="off" ng-hide="comment.loading">
                                         <div class="form-group">
                                             <label>Respuesta</label>
                                             <textarea class="form-control" ng-model="comment.msg" focus-me="{{comment.focusMe}}"
                                                 rows="2"></textarea>
                                         </div>
-                                        <button type="button" ng-click="sendComment(comment);" class="btn btn-primary">Enviar</button>
+                                        <button type="button" ng-click="sendComment(comment.id);" class="btn btn-primary">Enviar</button>
                                     </form>
                                 </div>
                             </div>
@@ -82,5 +83,11 @@
                 <button ng-disabled="form.msg.length == 0" type="button" ng-click="sendComment();" class="btn btn-primary">Enviar</button>
             </form>
         </div>
+    </div>
+    <div ng-if="user == null" class="text-center">
+        <small>Es necesario iniciar sesion para realizar una consulta.</small>
+        <p>
+            <a href="#!/login/ver-anuncio/{{article.id}}" class="btn btn-warning my-2 my-sm-0">Inicia sesión</a>
+        </p>
     </div>
 </any>

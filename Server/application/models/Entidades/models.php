@@ -90,7 +90,7 @@ class User
     /**
      * @var integer
      *
-     * @Column(name="id_fb", type="integer", nullable=true)
+     * @Column(name="id_fb", type="text", nullable=true)
      */
     private $idFb;
 

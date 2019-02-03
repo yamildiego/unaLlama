@@ -42,19 +42,40 @@ app.directive('comments', function ($http, Constants, $timeout) {
                 })
             }
 
-            scope.sendComment = function (comment) {
-                scope.loading = true;
+            scope.sendComment = function (id) {
+                var comment = scope.getComment(id);
+                if (comment != null) {
+                    comment.loading = true;
+                } else {
+                    scope.loading = true;
+                }
                 $http.post(Constants.APIURL + 'ArticleController/sendComment', { articleId: scope.article.id, commentId: (comment ? comment.id : null), text: (comment ? comment.msg : scope.form.msg) })
                     .then(function onSuccess(response) {
                         scope.loading = false;
                         if (response.data.status == 'OK') {
-                            scope.form.msg = "";
-                            scope.sentMsg = true;
                             scope.loadComments();
+                            if (comment != null) {
+                                comment.sentMsg = true;
+                                comment.reply = false;
+                            } else {
+                                scope.form.msg = "";
+                                scope.sentMsg = true;
+                            }
                         }
                     }, function onError(response) {
                         scope.loading = false;
                     });
+            }
+
+            scope.getComment = function (id) {
+                var comment = null;
+                if (id != null)
+                    scope.comments.forEach(function (e) {
+                        if (e.id == id) {
+                            comment = e;
+                        }
+                    });
+                return comment;
             }
 
             scope.loadComments = function () {
@@ -70,9 +91,10 @@ app.directive('comments', function ($http, Constants, $timeout) {
                     });
             }
 
-            $timeout(function () {
-                scope.initialize();
-            }, 1000);
+            scope.$watch('article', function () {
+                if (scope.article != null)
+                    scope.initialize();
+            });
         },
         templateUrl: "./App/Directives/comments/comments.html"
     }

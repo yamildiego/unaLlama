@@ -51,7 +51,7 @@ class Home extends REST_Controller
 
     private function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
-        $p_email_from = 'yamildiego91@gmail.com';
+        $p_email_from = 'info@unallama.com.ar';
         $this->load->library('email');
         $this->email->initialize();
         $this->email->from($p_email_from, 'Unallama');

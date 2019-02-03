@@ -90,13 +90,13 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link name-app" href="#" ng-class="{active: $route.current.activetab == 'home' }">
-                            UnaLlama
+                            <span class="link-bar">UnaLlama </span>
                         </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href ng-class="{active: $route.current.activetab == 'list' }"
                             id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Categorías
+                            <span class="link-bar">Categorías</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#!/listado-por-categoria/{{category.id}}" ng-repeat="category in categories">
@@ -106,20 +106,28 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" ng-click="goTo('/publicar-anuncio');" href ng-class="{active: $route.current.activetab == 'new-article' }">
-                            Publicar anuncio
+                            <span class="link-bar">Publicar anuncio</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" ng-click="goTo('/contacto');" href ng-class="{active: $route.current.activetab == 'contact' }">
-                            Contacto
+                            <span class="link-bar">Contacto</span>
                         </a>
                     </li>
                 </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-outline-light mr-sm-2" ng-click="goTo('/favoritos');" href>
+                        <i class="far fa-heart"></i> Favoritos
+                    </a>
+                    <a ng-show="userData == null" href ng-click="goTo('/login');" class="btn btn-warning my-2 my-sm-0">
+                        Inicia sesión
+                    </a>
+                </form>
                 <ul class="nav nav-pills" ng-show="userData != null">
                     <li class="nav-item dropdown">
-                        <a class="nav-link active dropdown-toggle btn btn-light" style=" font-family: 'ABeeZee', sans-serif!important;"
+                        <a class="nav-link dropdown-toggle btn btn-light" style=" font-family: 'ABeeZee', sans-serif!important;"
                             data-toggle="dropdown" href role="button" aria-haspopup="true" aria-expanded="false">
-                            <img style="border-radius:20px; max-width: 32px;" ng-src="{{ ((userData.photo.indexOf('/') != -1) ? userData.photo : ('../Server/assets/php/files/thumbnail/' + userData.photo))}}"
+                            <img style="border-radius:20px; max-width: 24px;" ng-src="{{ ((userData.photo.indexOf('/') != -1) ? userData.photo : ('../Server/assets/php/files/thumbnail/' + userData.photo))}}"
                                 alt="">
                             {{userData.name}}
                         </a>
@@ -133,12 +141,6 @@
                         </div>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0" ng-show="userData == null">
-                    <a class="btn btn-primary mr-sm-2" ng-click="goTo('/favoritos');" href>
-                        <i class="far fa-heart"></i> Favoritos
-                    </a>
-                    <a href ng-click="goTo('/login');" class="btn btn-warning my-2 my-sm-0">Inicia sesión</a>
-                </form>
             </div>
         </nav>
         <nav class="navbar navbar-expand-lg navbar-light y-border-primary">
@@ -158,7 +160,11 @@
                 <a ng-click="btnSearch();" class="btn btn-warning my-2 my-sm-0" href><i class="fas fa-search"></i></a>
             </form>
             <ul class="navbar-nav my-2 my-lg-0 d-none d-sm-none d-md-block">
-                <li class="nav-item">
+                <li style="float:left;">
+                    <div class="fb-like" data-href="https://www.unallama.com.ar" data-layout="button" data-action="like"
+                        data-size="large" data-show-faces="false" data-share="false"></div>
+                </li>
+                <li style="float:left; padding-left: 10px;" class="nav-item" ng-show="userData == null">
                     <a ng-click="goTo('/crear-cuenta');" href class="link-create-account">Crear cuenta</a>
                 </li>
             </ul>
@@ -208,7 +214,7 @@
         <div id="navegador">
             <ul>
                 <li><a target="_blank" href="https://www.instagram.com/yamildiego"><i class="fab fa-instagram"></i></a></li>
-                <li><a target="_blank" href="https://www.facebook.com/yamildieg0"><i class="fab fa-facebook"></i></a></li>
+                <li><a target="_blank" href="https://www.facebook.com/UnaLlama-2112312619078956"><i class="fab fa-facebook"></i></a></li>
                 <li><a target="_blank" href="https://twitter.com/Yamil90725878"><i class="fab fa-twitter"></i></a></li>
             </ul>
         </div>
