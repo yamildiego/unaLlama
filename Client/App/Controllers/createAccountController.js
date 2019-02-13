@@ -1,10 +1,35 @@
-app.controller('createAccountController', function ($scope, $http, Constants, $timeout, $window) {
+app.controller('createAccountController', function ($scope, $http, Constants, $timeout, $window, FaceService, $routeParams) {
 
     $scope.initialize = function () {
         $scope.form = { name: "", username: "", email: "", password: "", repeatPassword: "" };
         $scope.errors = [];
         $scope.successful = false;
         $scope.seconds = 8;
+    }
+
+    $scope.loginFB = function () {
+        $scope.loadForm = true;
+
+        FaceService.login(function (responseFB) {
+            $timeout(function () {
+                $scope.loadForm = false;
+
+                var paramId = (($routeParams.hasOwnProperty('id')) && $routeParams.id != null) ? '/' + $routeParams.id : '';
+
+                if ($routeParams.tab)
+                    $window.location.href = Constants.FRONTURL + '#!/' + $routeParams.tab + paramId;
+                else
+                    $window.location.href = Constants.FRONTURL;
+            });
+        }, function (responseFB) {
+            $timeout(function () {
+                if (responseFB.status === 'not_authorized')
+                    $scope.errors = ["Oops! No tienes permiso para acceder con Facebook."];
+                else
+                    $scope.errors = ["Oops! No pudimos conectar con facebook."];
+                $scope.loadForm = false;
+            });
+        });
     }
 
     $scope.newUser = function () {

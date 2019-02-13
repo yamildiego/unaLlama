@@ -185,26 +185,6 @@ a:active, a:focus {
     width: 420px;
 }
 
-@media (min-width: 576px) {}
-
-@media (max-width: 768px) {
-    .h-sm {
-        display: none;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 992px) {}
-
-@media (min-width: 768px) {
-    input.search {
-        min-width: 400px;
-    }
-}
-
-@media (min-width: 992px) {}
-
-@media (min-width: 1200px) {}
-
 .y-border-primary {
     border: 1px solid #337ab7;
     border-top: 0;
@@ -337,3 +317,63 @@ h1, h2, h3, h4, h5 {
 .link-bar:hover {
     border-bottom: 2px solid #fbcc23;
 }
+
+.wjv {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    bottom: 3px;
+    font-size: 18px;
+    line-height: 0px;
+    padding-left: 8px;
+    text-decoration: none;
+    color: #fbcc23;
+    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
+
+.wjvl {
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 0px;
+    padding-left: 8px;
+    text-decoration: none;
+    color: #fbcc23;
+}
+
+.logo-load {
+    font-size: 26px;
+    line-height: 50px;
+    color: #105896;
+}
+
+@media (min-width: 576px) {}
+
+@media (max-width: 768px) {
+    .wjv {
+        display: none;
+    }
+    .h-sm {
+        display: none;
+    }
+    #main-form {
+        width: auto!important;
+    }
+    #navbarSupportedContent {
+        padding-left: 0;
+    }
+    #navbarSupportedContent .nav-link .link-bar {
+        padding-left: 10px!important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {}
+
+@media (min-width: 768px) {
+    input.search {
+        min-width: 400px;
+    }
+}
+
+@media (min-width: 992px) {}
+
+@media (min-width: 1200px) {}

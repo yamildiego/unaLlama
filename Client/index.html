@@ -75,7 +75,7 @@
     <div style="text-align: center; width: 100%;" ng-show="preload == null">
         <i class="fas fa-spinner fa-4x fa-pulse" style="margin-bottom:15%; margin-top: 10%; color:#61a4ff"></i>
     </div>
-    <loading ng-show="load" margin="10"></loading>
+    <loading ng-show="load" margin="10" logo="1" ></loading>
     <div class="container hide" ng-hide="load" ng-style="preload">
         <nav class="navbar navbar-expand-lg navbar-light navbar-yd">
             <a class="navbar-brand logo d-none d-sm-none d-md-none d-lg-block" href="#">
@@ -87,10 +87,11 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto" style="position: relative;">
                     <li class="nav-item">
                         <a class="nav-link name-app" href="#" ng-class="{active: $route.current.activetab == 'home' }">
                             <span class="link-bar">UnaLlama </span>
+                            <span class="wjv">Donde Jujuy vende</span>
                         </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -169,7 +170,7 @@
                 </li>
             </ul>
         </nav>
-        <loading ng-show="loadMain" margin="10" color="#fff"></loading>
+        <loading ng-show="loadMain" margin="10" color="#fff" logo="1"></loading>
         <div class="main" ng-hide="loadMain">
             <div class="page {{ pageClass }}" ng-view></div>
         </div>
@@ -213,9 +214,7 @@
         </div>
         <div id="navegador">
             <ul>
-                <li><a target="_blank" href="https://www.instagram.com/yamildiego"><i class="fab fa-instagram"></i></a></li>
                 <li><a target="_blank" href="https://www.facebook.com/UnaLlama-2112312619078956"><i class="fab fa-facebook"></i></a></li>
-                <li><a target="_blank" href="https://twitter.com/Yamil90725878"><i class="fab fa-twitter"></i></a></li>
             </ul>
         </div>
         <div class="bg-dark footer-copyright text-center py-3">© 2019 Copyright:
