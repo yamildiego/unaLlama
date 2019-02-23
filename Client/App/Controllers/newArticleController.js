@@ -23,7 +23,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         });
 
         $scope.anio = (new Date).getFullYear();
-        $scope.form = { title: "", description: "", category: "0", price: "", year: $scope.anio, kilometers: 0, photos: [] };
+        $scope.form = { title: "", description: "", category: "0", price: "", year: $scope.anio, state: "", operation: "", kilometers: 0, photos: [] };
     }
 
     $scope.destroy = function (name) {
@@ -42,9 +42,58 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
     }
 
     $scope.newArticle = function () {
-        $scope.loadImages = true;
-        $scope.loadTp();
-        $scope.checkNewArticle();
+        var errors = [];
+
+        if ($scope.form.title == "") {
+            errors.push("required_title");
+        }
+
+        if ($scope.form.title.length >= 100) {
+            errors.push("long_title");
+        }
+
+        if ($scope.form.description == "") {
+            errors.push("required_description");
+        }
+
+        if ($scope.form.category == "0" || $scope.form.category == null || $scope.form.category == 0) {
+            errors.push("required_category");
+        }
+
+        if ($scope.form.operation == "" || $scope.form.operation == null) {
+            errors.push("required_operation");
+        }
+
+        if ($scope.form.category != "0" && $scope.form.category != "1" && $scope.form.category != "10" && $scope.form.category != "14") {
+            if ($scope.form.state == "") {
+                errors.push("required_state");
+            }
+        }
+
+        if (errors.length > 0) {
+            $scope.errors = $scope.$parent.getErrors({ "status": "errors_exists", "errors": errors });
+        } else {
+            $scope.errors = [];
+            $scope.loadImages = true;
+            $scope.loadTp();
+
+            var isLoading = false;
+            $scope.dataArticle.photos.forEach(function (file) {
+                if ((file.$state instanceof Function) && (file.$state() == "pending")) {
+                    isLoading = true;
+                }
+            });
+
+            if (!$scope.sent)
+                if (isLoading === false) {
+                    $scope.sent = true;
+                    $scope.confirmNewArticle();
+                } else {
+                    $timeout(function () { $scope.newArticle(); }, 500);
+                }
+        }
+
+        console.warn(errors);
     }
 
     $scope.confirmNewArticle = function () {
@@ -77,23 +126,6 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
                     }
                 });
         }
-    }
-
-    $scope.checkNewArticle = function () {
-        var isLoading = false;
-        $scope.dataArticle.photos.forEach(function (file) {
-            if ((file.$state instanceof Function) && (file.$state() == "pending")) {
-                isLoading = true;
-            }
-        });
-
-        if (!$scope.sent)
-            if (isLoading === false) {
-                $scope.sent = true;
-                $scope.confirmNewArticle();
-            } else {
-                $timeout(function () { $scope.checkNewArticle(); }, 500);
-            }
     }
 
     $scope.end = function () {

@@ -77,6 +77,9 @@ app.controller('mainController', function ($scope, $http, AuthService, Constants
             case 'required_title':
                 msg = "El campo título es obligatorio.";
                 break;
+            case 'long_title':
+                msg = "El campo título es demasiado largo. (100 caracteres máximo)";
+                break;
             case 'required_description':
                 msg = "El campo descripción es obligatorio.";
                 break;

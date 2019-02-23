@@ -13,6 +13,22 @@ class Home extends REST_Controller
         // $this->response("OK", REST_Controller::HTTP_OK); // OK (200)
     }
 
+    public function getCategories_get()
+    {
+        $data = array('status' => null);
+        $categories = $this->Category_model->get_categories();
+        $categoriesData = array();
+
+        foreach ($categories as $category) {
+            $categoriesData[$category->getId()] = array('id' => $category->getId(), 'name' => $category->getName(), 'icon' => $category->getIcon(), 'quantity_products' => $this->Article_model->getQuantityProducts($category->getId()));
+        }
+
+        $data['status'] = 'OK';
+        $data['data'] = $categoriesData;
+
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200)
+    }
+
     public function sendMsg_post()
     {
         $obj = (object) array('name' => $this->post('name'), 'email' => $this->post('email'), 'message' => $this->post('query'));
@@ -49,6 +65,7 @@ class Home extends REST_Controller
         }
     }
 
+    
     private function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
         $p_email_from = 'info@unallama.com.ar';

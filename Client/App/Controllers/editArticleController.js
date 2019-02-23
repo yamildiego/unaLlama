@@ -74,9 +74,57 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
     }
 
     $scope.editArticle = function () {
-        $scope.loadImages = true;
-        $scope.loadTp();
-        $scope.checkEditArticle();
+
+        var errors = [];
+
+        if ($scope.form.title == "") {
+            errors.push("required_title");
+        }
+
+        if ($scope.form.title.length >= 100) {
+            errors.push("long_title");
+        }
+
+        if ($scope.form.description == "") {
+            errors.push("required_description");
+        }
+
+        if ($scope.form.category == "0" || $scope.form.category == null || $scope.form.category == 0) {
+            errors.push("required_category");
+        }
+
+        if ($scope.form.operation == "" || $scope.form.operation == null) {
+            errors.push("required_operation");
+        }
+
+        if ($scope.form.category != "0" && $scope.form.category != "1" && $scope.form.category != "10" && $scope.form.category != "14") {
+            if ($scope.form.state == "") {
+                errors.push("required_state");
+            }
+        }
+
+        if (errors.length > 0) {
+            $scope.errors = $scope.$parent.getErrors({ "status": "errors_exists", "errors": errors });
+        } else {
+            $scope.errors = [];
+            $scope.loadImages = true;
+            $scope.loadTp();
+            
+            var isLoading = false;
+            $scope.dataArticle.photos.forEach(function (file) {
+                if ((file.$state instanceof Function) && (file.$state() == "pending")) {
+                    isLoading = true;
+                }
+            });
+
+            if (!$scope.sent)
+                if (isLoading === false) {
+                    $scope.sent = true;
+                    $scope.confirmEditArticle();
+                } else {
+                    $timeout(function () { $scope.editArticle(); }, 500);
+                }
+        }
     }
 
     $scope.confirmEditArticle = function () {
@@ -126,24 +174,6 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
             }, 1000);
         }
     }
-
-    $scope.checkEditArticle = function () {
-        var isLoading = false;
-        $scope.dataArticle.photos.forEach(function (file) {
-            if ((file.$state instanceof Function) && (file.$state() == "pending")) {
-                isLoading = true;
-            }
-        });
-
-        if (!$scope.sent)
-            if (isLoading === false) {
-                $scope.sent = true;
-                $scope.confirmEditArticle();
-            } else {
-                $timeout(function () { $scope.checkEditArticle(); }, 500);
-            }
-    }
-
 
     function preparatedPhotos(photos) {
         photos.forEach(function (element, index) {

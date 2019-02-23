@@ -75,7 +75,7 @@
     <div style="text-align: center; width: 100%;" ng-show="preload == null">
         <i class="fas fa-spinner fa-4x fa-pulse" style="margin-bottom:15%; margin-top: 10%; color:#61a4ff"></i>
     </div>
-    <loading ng-show="load" margin="10" logo="1" ></loading>
+    <loading ng-show="load" margin="10" logo="1"></loading>
     <div class="container hide" ng-hide="load" ng-style="preload">
         <nav class="navbar navbar-expand-lg navbar-light navbar-yd">
             <a class="navbar-brand logo d-none d-sm-none d-md-none d-lg-block" href="#">
@@ -95,23 +95,27 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href ng-class="{active: $route.current.activetab == 'list' }"
-                            id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href
+                            ng-class="{active: $route.current.activetab == 'list' }" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="link-bar">Categorías</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#!/listado-por-categoria/{{category.id}}" ng-repeat="category in categories">
+                            <a class="dropdown-item" href="#!/listado-por-categoria/{{category.id}}"
+                                ng-repeat="category in categories">
                                 {{category.name + ' ('+category.quantity_products+')'}}
                             </a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" ng-click="goTo('/publicar-anuncio');" href ng-class="{active: $route.current.activetab == 'new-article' }">
+                        <a class="nav-link" ng-click="goTo('/publicar-anuncio');" href
+                            ng-class="{active: $route.current.activetab == 'new-article' }">
                             <span class="link-bar">Publicar anuncio</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" ng-click="goTo('/contacto');" href ng-class="{active: $route.current.activetab == 'contact' }">
+                        <a class="nav-link" ng-click="goTo('/contacto');" href
+                            ng-class="{active: $route.current.activetab == 'contact' }">
                             <span class="link-bar">Contacto</span>
                         </a>
                     </li>
@@ -126,9 +130,11 @@
                 </form>
                 <ul class="nav nav-pills" ng-show="userData != null">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle btn btn-light" style=" font-family: 'ABeeZee', sans-serif!important;"
-                            data-toggle="dropdown" href role="button" aria-haspopup="true" aria-expanded="false">
-                            <img style="border-radius:20px; max-width: 24px;" ng-src="{{ ((userData.photo.indexOf('/') != -1) ? userData.photo : ('../Server/assets/php/files/thumbnail/' + userData.photo))}}"
+                        <a class="nav-link dropdown-toggle btn btn-light"
+                            style=" font-family: 'ABeeZee', sans-serif!important;" data-toggle="dropdown" href
+                            role="button" aria-haspopup="true" aria-expanded="false">
+                            <img style="border-radius:20px; max-width: 24px;"
+                                ng-src="{{ ((userData.photo.indexOf('/') != -1) ? userData.photo : ('../Server/assets/php/files/thumbnail/' + userData.photo))}}"
                                 alt="">
                             {{userData.name}}
                         </a>
@@ -151,8 +157,10 @@
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">{{search.category.name}}</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href ng-click="$event.preventDefault(); search.category = {id: 0, name: 'Categoría'};">Todas</a>
-                            <a class="dropdown-item" href ng-click="$event.preventDefault(); search.category = category;"
+                            <a class="dropdown-item" href
+                                ng-click="$event.preventDefault(); search.category = {id: 0, name: 'Categoría'};">Todas</a>
+                            <a class="dropdown-item" href
+                                ng-click="$event.preventDefault(); search.category = category;"
                                 ng-repeat="category in categories">{{category.name}}</a>
                         </div>
                     </div>
@@ -187,7 +195,8 @@
                     <ul class="list-unstyled text-white">
                         <li><a ng-click="goTo('/');" href class="text-white small"><u>Inicio</u></a></li>
                         <li><a ng-click="goTo('/listado');" href class="text-white small"><u>Anuncios</u></a></li>
-                        <li><a ng-click="goTo('/publicar-anuncio');" href class="text-white small"><u>Publicar anuncio</u></a></li>
+                        <li><a ng-click="goTo('/publicar-anuncio');" href class="text-white small"><u>Publicar
+                                    anuncio</u></a></li>
                         <li><a ng-click="goTo('/contacto');" href class="text-white small"><u>Contacto</u></a></li>
                     </ul>
                 </div>
@@ -214,7 +223,11 @@
         </div>
         <div id="navegador">
             <ul>
-                <li><a target="_blank" href="https://www.facebook.com/UnaLlama-2112312619078956"><i class="fab fa-facebook"></i></a></li>
+                <li>
+                    <a target="_blank" href="https://www.facebook.com/UnaLlama-2112312619078956">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="bg-dark footer-copyright text-center py-3">© 2019 Copyright:
