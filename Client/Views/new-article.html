@@ -9,15 +9,84 @@
             <p class="text-center">Cargando imagenes{{tp}}</p>
         </div>
         <div ng-hide="loadImages">
+            <div class="panel">
+                <h2>Nuevo anuncio</h2>
+            </div>
             <form autocomplete="off">
-                <div class="panel">
-                    <h2>Nuevo anuncio</h2>
-                </div>
                 <div class="form-group">
                     <label for="title">Título <span class="mandatory">(*)</span></label>
                     <input type="text" id="title" ng-model="form.title" class="form-control" placeholder="Título"
                         maxlength="100">
                 </div>
+            </form>
+            <span class="small">Las imagenes no puede pesar mas de {{sizeMax/1000000}}mb</span>
+            <form id="fileupload" method="POST" file-upload="options" enctype="multipart/form-data"
+                ng-class="{'fileupload-processing': processing() || loadingFiles}">
+                <div class="row fileupload-buttonbar">
+                    <div class="col-lg-7">
+                        <span class="btn btn-success fileinput-button"
+                            ng-class="{disabled: (disabled || queue.length >= 5) }">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <span>Agregar foto</span>
+                            <input type="file" name="files[]" multiple ng-disabled="(disabled || queue.length >= 5)">
+                            <span class="fileupload-process"></span>
+                        </span>
+                        <span class="fileupload-process"></span>
+                    </div>
+                    <div class="col-lg-5 fade" ng-class="{in: active()}">
+                        <div class="progress progress-striped active" file-upload-progress="progress()">
+                            <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
+                        </div>
+                        <div class="progress-extended">&nbsp;</div>
+                    </div>
+                </div>
+                <table class="table table-striped files ng-cloak">
+                    <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
+                        <td ng-hide="true">{{dataArticle.photos = queue}}</td>
+                        <td ng-switch on="!!file.thumbnailUrl">
+                            <div class="preview" ng-switch-when="true">
+                                <a ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}" download="{{file.name}}"
+                                    gallery><img ng-src="{{file.thumbnailUrl}}" alt=""></a>
+                            </div>
+                            <div class="preview" ng-switch-default
+                                ng-hide="(file.size >= 1500000) || (file.error != null)">
+                                <loading size="fa-2x"></loading>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="name" ng-switch on="!!file.url">
+                                <span ng-switch-when="true" ng-switch on="!!file.thumbnailUrl">
+                                    <a ng-switch-when="true" ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}"
+                                        download="{{file.name}}" gallery>{{'Imagen-' + ($index + 1)}}</a>
+                                    <a ng-switch-default ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}"
+                                        download="{{file.name}}">{{'Imagen-' + ($index + 1)}}</a>
+                                </span>
+                                <span ng-switch-default>{{'Imagen-' + ($index + 1)}}</span>
+                            </p>
+                            <strong ng-show="file.size >= sizeMax" class="error file-error text-danger">
+                                El archivo es demasiado grande
+                            </strong>
+                            <strong ng-show="file.error && (sizeMax > file.size)"
+                                class="error file-error text-danger">{{file.error}}</strong>
+                        </td>
+                        <td>
+                            <p class="size">{{file.size | formatFileSize}}</p>
+                            <div class="progress progress-striped active fade" ng-class="{pending: 'in'}[file.$state()]"
+                                file-upload-progress="file.$progress()">
+                                <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger destroy"
+                                ng-click="clear(file); destroy(file.name)">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <span>Borrar</span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <form autocomplete="off">
                 <div class="form-group">
                     <label for="description">Descripción <span class="mandatory">(*)</span></label>
                     <textarea id="description" ng-model="form.description" class="form-control"
@@ -114,76 +183,10 @@
                     <input type="email" id="email" ng-model="form.email" class="form-control">
                 </div>
             </form>
-            <span class="small">Las imagenes no puede pesar mas de 3mb</span>
-            <form id="fileupload" method="POST" file-upload="options" enctype="multipart/form-data"
-                ng-class="{'fileupload-processing': processing() || loadingFiles}">
-                <div class="row fileupload-buttonbar">
-                    <div class="col-lg-7">
-                        <span class="btn btn-success fileinput-button"
-                            ng-class="{disabled: (disabled || queue.length >= 5) }">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <span>Agregar foto</span>
-                            <input type="file" name="files[]" multiple ng-disabled="(disabled || queue.length >= 5)">
-                            <span class="fileupload-process"></span>
-                        </span>
-                        <span class="fileupload-process"></span>
-                    </div>
-                    <div class="col-lg-5 fade" ng-class="{in: active()}">
-                        <div class="progress progress-striped active" file-upload-progress="progress()">
-                            <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
-                        </div>
-                        <div class="progress-extended">&nbsp;</div>
-                    </div>
-                </div>
-                <table class="table table-striped files ng-cloak">
-                    <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
-                        <td ng-hide="true">{{dataArticle.photos = queue}}</td>
-                        <td ng-switch on="!!file.thumbnailUrl">
-                            <div class="preview" ng-switch-when="true">
-                                <a ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}" download="{{file.name}}"
-                                    gallery><img ng-src="{{file.thumbnailUrl}}" alt=""></a>
-                            </div>
-                            <div class="preview" ng-switch-default ng-hide="file.size >= 1500000">
-                                <loading></loading>
-                            </div>
-                        </td>
-                        <td>
-                            <p class="name" ng-switch on="!!file.url">
-                                <span ng-switch-when="true" ng-switch on="!!file.thumbnailUrl">
-                                    <a ng-switch-when="true" ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}"
-                                        download="{{file.name}}" gallery>{{'Imagen-' + ($index + 1)}}</a>
-                                    <a ng-switch-default ng-href="{{file.url}}" title="{{'Imagen-' + ($index + 1)}}"
-                                        download="{{file.name}}">{{'Imagen-' + ($index + 1)}}</a>
-                                </span>
-                                <span ng-switch-default>{{'Imagen-' + ($index + 1)}}</span>
-                            </p>
-                            <strong ng-show="file.size >= 3000000" class="error file-error text-danger">
-                                El archivo es demasiado grande
-                            </strong>
-                            <strong ng-show="file.error && (3000000 > file.size)"
-                                class="error file-error text-danger">{{file.error}}</strong>
-                        </td>
-                        <td>
-                            <p class="size">{{file.size | formatFileSize}}</p>
-                            <div class="progress progress-striped active fade" ng-class="{pending: 'in'}[file.$state()]"
-                                file-upload-progress="file.$progress()">
-                                <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
-                            </div>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger destroy"
-                                ng-click="clear(file); destroy(file.name)">
-                                <i class="glyphicon glyphicon-trash"></i>
-                                <span>Delete</span>
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
             <div ng-show="errors.length > 0" class="container_errors">
                 <p ng-repeat="error in errors">{{error}}</p>
             </div>
-            <button type="submit" class="btn btn-info" ng-click="newArticle()">Publicar</button>
+            <button type="submit" class="btn btn-info" ng-click="newArticle(true)">Publicar</button>
         </div>
     </div>
 </div>

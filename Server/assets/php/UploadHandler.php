@@ -1392,13 +1392,18 @@ class UploadHandler
         }
 
         foreach ($content['files'] as $ff) {
-            if ($ff->size >= 200000) {
-                $this->compress('./files/' . $ff->name, './files/lowq/' . $ff->name, 95);
-            } else {
-                copy('./files/' . $ff->name, './files/lowq/' . $ff->name);
-            }
+            $info = new SplFileInfo($ff->name);
+            if ($info->getExtension() != "") {
+                if ($ff->size >= 200000) {
+                    $this->compress('./files/' . $ff->name, './files/lowq/' . $ff->name, 95);
+                } else {
+                    copy('./files/' . $ff->name, './files/lowq/' . $ff->name);
+                }
 
-            $ff->url = str_replace($ff->name, 'lowq/' . $ff->name, $ff->url);
+                if (isset($ff->url)) {
+                    $ff->url = str_replace($ff->name, 'lowq/' . $ff->name, $ff->url);
+                }
+            }
         }
 
         return $content;
@@ -1406,7 +1411,6 @@ class UploadHandler
 
     public function compress($source, $destination, $quality)
     {
-
         $info = getimagesize($source);
 
         if ($info['mime'] == 'image/jpeg') {

@@ -2,6 +2,7 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
 
     $scope.initialize = function () {
         $scope.loading = true;
+        $scope.sizeMax = Constants.SIZEMAX;
         $scope.seconds = 5;
         $scope.dataArticle = { photos: [] };
         $scope.sent = false;
@@ -76,18 +77,21 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         return (item.forRemove === undefined);
     };
 
-    $scope.loadTp = function () {
-        $timeout(function () {
-            if ($scope.tp.length >= 3) {
-                $scope.tp = ""
-            } else {
-                $scope.tp += "."
-            }
-            $scope.loadTp();
-        }, 500)
+    $scope.loadTp = function (loadTP) {
+        if (loadTP)
+            $timeout(function () {
+                if ($scope.tp.length >= 3) {
+                    $scope.tp = ""
+                } else {
+                    $scope.tp += "."
+                }
+
+                if ($scope.loadImages)
+                    $scope.loadTp(true);
+            }, 500)
     }
 
-    $scope.editArticle = function () {
+    $scope.editArticle = function (loadTP) {
 
         var errors = [];
 
@@ -126,21 +130,36 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         } else {
             $scope.errors = [];
             $scope.loadImages = true;
-            $scope.loadTp();
+            $scope.loadTp(loadTP);
 
             var isLoading = false;
             $scope.dataArticle.photos.forEach(function (file) {
                 if ((file.$state instanceof Function) && (file.$state() == "pending")) {
                     isLoading = true;
                 }
+
+                if (file.error != null || file.size > Constants.SIZEMAX) {
+                    $scope.loadImages = false;
+                    var isAdded = false;
+
+                    $scope.errors.forEach(function (currentValue, index, arr) {
+                        if (currentValue == "Hubo un problema al cargar una de sus imágenes, remplace la imagen para publicar.") {
+                            isAdded = true;
+                        }
+                    });
+
+                    if (isAdded == false) {
+                        $scope.errors.push("Hubo un problema al cargar una de sus imágenes, remplace la imagen para publicar.")
+                    }
+                }
             });
 
-            if (!$scope.sent)
+            if (!$scope.sent && $scope.loadImages)
                 if (isLoading === false) {
                     $scope.sent = true;
                     $scope.confirmEditArticle();
                 } else {
-                    $timeout(function () { $scope.editArticle(); }, 500);
+                    $timeout(function () { $scope.editArticle(false); }, 500);
                 }
         }
     }
