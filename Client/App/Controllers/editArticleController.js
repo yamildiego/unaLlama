@@ -8,6 +8,8 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         $scope.loadImages = false;
         $scope.tp = "";
 
+        $scope.loadDepartments();
+
         $scope.options = {
             url: '../Server/assets/php/'
         };
@@ -25,6 +27,17 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
         });
     }
 
+    $scope.loadDepartments = function () {
+        $http.get(Constants.APIURL + 'ArticleController/getDepartments')
+            .then(function onSuccess(response) {
+                if (response.data.status == 'OK') {
+                    $scope.departments = response.data.data;
+                }
+            }, function onError(response) {
+                $scope.departments = [];
+            });
+    }
+
     $scope.loadArticle = function () {
         $http.post(Constants.APIURL + 'ArticleController/getArticle', { articleId: $routeParams.idArticle, isViewing: true })
             .then(function onSuccess(response) {
@@ -33,6 +46,7 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
                     $scope.loading = false;
                     $scope.form = response.data.data;
                     $scope.form.category = $scope.form.categoryId;
+                    $scope.form.department = $scope.form.departmentId;
                 }
             }, function onError(response) {
                 $window.location.href = Constants.FRONTURL + '#!/listado';
@@ -103,13 +117,17 @@ app.controller('editArticleController', function ($scope, $http, Constants, $rou
             }
         }
 
+        if ($scope.form.department == "0" || $scope.form.department == null || $scope.form.department == 0) {
+            errors.push("required_department");
+        }
+
         if (errors.length > 0) {
             $scope.errors = $scope.$parent.getErrors({ "status": "errors_exists", "errors": errors });
         } else {
             $scope.errors = [];
             $scope.loadImages = true;
             $scope.loadTp();
-            
+
             var isLoading = false;
             $scope.dataArticle.photos.forEach(function (file) {
                 if ((file.$state instanceof Function) && (file.$state() == "pending")) {

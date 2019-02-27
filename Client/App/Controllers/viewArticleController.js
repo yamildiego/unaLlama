@@ -2,6 +2,7 @@ app.controller('viewArticleController', function ($scope, $http, Constants, $rou
 
     $scope.initialize = function () {
         moment.locale('es');
+        $scope.loadDepartments();
 
         $scope.loading = true;
         $scope.loadArticle();
@@ -11,6 +12,17 @@ app.controller('viewArticleController', function ($scope, $http, Constants, $rou
         }, function (response) {
             $rootScope.$broadcast("disconnected", response.data.status);
         });
+    }
+
+    $scope.loadDepartments = function () {
+        $http.get(Constants.APIURL + 'ArticleController/getDepartments')
+            .then(function onSuccess(response) {
+                if (response.data.status == 'OK') {
+                    $scope.departments = response.data.data;
+                }
+            }, function onError(response) {
+                $scope.departments = [];
+            });
     }
 
     $scope.loadArticle = function () {

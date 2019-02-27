@@ -48,6 +48,11 @@ class Article_model extends CI_Model
             $sql .= ' AND c.id = :category';
         }
 
+        if (isset($filter->department) && $filter->department != 0) {
+            $query->join('a.department', 'd');
+            $sql .= ' AND d.id = :department';
+        }
+
         if (isset($filter->operation) && $filter->operation != 0) {
             $sql .= ' AND a.operation = :operation';
         }
@@ -91,6 +96,10 @@ class Article_model extends CI_Model
 
         if (isset($filter->category) && $filter->category != 0) {
             $query->setParameter('category', $filter->category);
+        }
+
+        if (isset($filter->department) && $filter->department != 0) {
+            $query->setParameter('department', $filter->department);
         }
 
         if (isset($filter->operation) && $filter->operation != 0) {

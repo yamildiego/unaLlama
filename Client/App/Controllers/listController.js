@@ -8,6 +8,7 @@ app.controller('listController', function ($scope, $http, Constants, AuthService
         $scope.loadingArticles = true;
         $scope.categoryTitle = 0;
         $scope.clean();
+        $scope.loadDepartments();
 
         $scope.getFilter();
         AuthService.checkAuthInside().then(function (response) {
@@ -16,6 +17,17 @@ app.controller('listController', function ($scope, $http, Constants, AuthService
         }, function (response) {
             $rootScope.$broadcast("disconnected", response.data.status);
         });
+    }
+
+    $scope.loadDepartments = function () {
+        $http.get(Constants.APIURL + 'ArticleController/getDepartments')
+            .then(function onSuccess(response) {
+                if (response.data.status == 'OK') {
+                    $scope.departments = response.data.data;
+                }
+            }, function onError(response) {
+                $scope.departments = [];
+            });
     }
 
     $scope.getFilter = function () {
@@ -31,7 +43,7 @@ app.controller('listController', function ($scope, $http, Constants, AuthService
     }
 
     $scope.resetFilter = function () {
-        $scope.filter = { category: "0", kilometersMax: "", kilometersMin: "", operation: "0", priceMax: "", priceMin: "", search: "", state: "0", yearMax: "", yearMin: "" };
+        $scope.filter = { department: "0", category: "0", kilometersMax: "", kilometersMin: "", operation: "0", priceMax: "", priceMin: "", search: "", state: "0", yearMax: "", yearMin: "" };
         $scope.loadingArticles = true;
         $http.post(Constants.APIURL + 'ArticleController/setFilter', $scope.filter)
             .then(function onSuccess(response) {

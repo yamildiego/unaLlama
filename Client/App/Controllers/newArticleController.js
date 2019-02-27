@@ -9,6 +9,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         $scope.loadImages = false;
         $scope.tp = "";
         $scope.sent = false;
+        $scope.loadDepartments();
 
         AuthService.checkAuthInside().then(function (response) {
             $rootScope.$broadcast("connected", response.data.status);
@@ -23,11 +24,22 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         });
 
         $scope.anio = (new Date).getFullYear();
-        $scope.form = { title: "", description: "", category: "0", price: "", year: $scope.anio, state: "", operation: "", kilometers: 0, photos: [] };
+        $scope.form = { title: "", description: "", department: "0", category: "0", price: "", year: $scope.anio, state: "", operation: "", kilometers: 0, photos: [] };
     }
 
     $scope.destroy = function (name) {
         $http.get(Constants.APIURL + 'ArticleController/deletePhoto/' + name).then();
+    }
+
+    $scope.loadDepartments = function () {
+        $http.get(Constants.APIURL + 'ArticleController/getDepartments')
+            .then(function onSuccess(response) {
+                if (response.data.status == 'OK') {
+                    $scope.departments = response.data.data;
+                }
+            }, function onError(response) {
+                $scope.departments = [];
+            });
     }
 
     $scope.loadTp = function () {
@@ -70,6 +82,10 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
             }
         }
 
+        if ($scope.form.department == "0" || $scope.form.department == null || $scope.form.department == 0) {
+            errors.push("required_department");
+        }
+
         if (errors.length > 0) {
             $scope.errors = $scope.$parent.getErrors({ "status": "errors_exists", "errors": errors });
         } else {
@@ -92,8 +108,6 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
                     $timeout(function () { $scope.newArticle(); }, 500);
                 }
         }
-
-        console.warn(errors);
     }
 
     $scope.confirmNewArticle = function () {

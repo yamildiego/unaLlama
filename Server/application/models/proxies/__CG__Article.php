@@ -225,6 +225,18 @@ class Article extends \Article implements \Doctrine\ORM\Proxy\Proxy
         return parent::getCategory();
     }
 
+    public function setDepartment(\Department $department = NULL)
+    {
+        $this->__load();
+        return parent::setDepartment($department);
+    }
+
+    public function getDepartment()
+    {
+        $this->__load();
+        return parent::getDepartment();
+    }
+
     public function setUser(\User $user = NULL)
     {
         $this->__load();
@@ -270,7 +282,7 @@ class Article extends \Article implements \Doctrine\ORM\Proxy\Proxy
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description', 'price', 'phone', 'address', 'email', 'state', 'operation', 'year', 'kilometers', 'viewed', 'datePublication', 'dateCreation', 'deleted', 'category', 'user', 'photos', 'housingType');
+        return array('__isInitialized__', 'id', 'title', 'description', 'price', 'phone', 'address', 'email', 'state', 'operation', 'year', 'kilometers', 'viewed', 'datePublication', 'dateCreation', 'deleted', 'category', 'department', 'user', 'photos', 'housingType');
     }
 
     public function __clone()

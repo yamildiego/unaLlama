@@ -7,11 +7,13 @@
             </div>
             <h2>
                 Anuncio > {{article.title}}
-                <loading class="float-right" style="padding-right: 5px;" size="fa-1x" ng-show="article.loadingFavorite"></loading>
+                <loading class="float-right" style="padding-right: 5px;" size="fa-1x" ng-show="article.loadingFavorite">
+                </loading>
                 <a class="link-favorites" style="font-size:15px;" ng-show="sessionExpired" href="#!/login">
                     Es necesario iniciar sesión para agregar anuncios a favoritos.
                 </a>
-                <a href class="link-favorites" style="font-size:15px;" ng-click="addRemoveFb(article, 'add')" ng-hide="article.loadingFavorite || article.isFb || sessionExpired">
+                <a href class="link-favorites" style="font-size:15px;" ng-click="addRemoveFb(article, 'add')"
+                    ng-hide="article.loadingFavorite || article.isFb || sessionExpired">
                     <i class="far fa-star" style="color:#ffc107;"></i>
                     <span> Agregar a favoritos</span>
                 </a>
@@ -32,7 +34,8 @@
         <form autocomplete="off">
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <textarea disabled id="description" ng-model="article.description" class="form-control" cols="20" rows="3"></textarea>
+                <textarea disabled id="description" ng-model="article.description" class="form-control" cols="20"
+                    rows="3"></textarea>
             </div>
             <div class="form-group">
                 <label for="price">Precio</label>
@@ -56,14 +59,16 @@
                     <select disabled class="custom-select" id="operation" ng-model="article.operation">
                         <option value="1" ng-show="article.categoryId != 14">Compro</option>
                         <option value="2" ng-show="article.categoryId != 14">Vendo</option>
-                        <option value="3" ng-show="article.categoryId == 10 || article.categoryId == 15 ">Alquilo</option>
+                        <option value="3" ng-show="article.categoryId == 10 || article.categoryId == 15 ">Alquilo
+                        </option>
                         <option value="4" ng-show="article.categoryId == 1 ">Regalo</option>
                         <option value="5" ng-show="article.categoryId == 14">Buscando trabajo</option>
                         <option value="6" ng-show="article.categoryId == 14">Ofreciendo un trabajo</option>
                     </select>
                 </div>
             </div>
-            <div class="form-group" ng-show="article.categoryId != 0 && article.categoryId != 1 && article.categoryId != 10 && article.categoryId != 14">
+            <div class="form-group"
+                ng-show="article.categoryId != 0 && article.categoryId != 1 && article.categoryId != 10 && article.categoryId != 14">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="state">Estado</label>
@@ -93,6 +98,18 @@
                 <div class="form-group col-6">
                     <label for="address">Dirección</label>
                     <input type="text" id="address" disabled ng-model="article.address" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="department">Departamento</label>
+                    </div>
+                    <select disabled="disabled" class="custom-select" id="department" ng-model="article.departmentId">
+                        <option value="0">Selecione un departamento</option>
+                        <option ng-repeat="department in departments" value="{{department.id}}">{{department.name}}
+                        </option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

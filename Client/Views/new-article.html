@@ -20,8 +20,8 @@
                 </div>
                 <div class="form-group">
                     <label for="description">Descripción <span class="mandatory">(*)</span></label>
-                    <textarea id="description" ng-model="form.description" class="form-control" placeholder="Descripción"
-                        cols="20" rows="3"></textarea>
+                    <textarea id="description" ng-model="form.description" class="form-control"
+                        placeholder="Descripción" cols="20" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="price">Precio</label>
@@ -31,18 +31,22 @@
                 <div class="form-group">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="category">Categoria <span class="mandatory">(*)</span></label>
+                            <label class="input-group-text" for="category">Categoria <span
+                                    class="mandatory">(*)</span></label>
                         </div>
-                        <select ng-change="form.operation = null" class="custom-select" id="category" ng-model="form.category">
+                        <select ng-change="form.operation = null" class="custom-select" id="category"
+                            ng-model="form.category">
                             <option value="0">Selecione una categoria</option>
-                            <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+                            <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}
+                            </option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="operation">Operación <span class="mandatory">(*)</span></label>
+                            <label class="input-group-text" for="operation">Operación <span
+                                    class="mandatory">(*)</span></label>
                         </div>
                         <select class="custom-select" id="operation" ng-model="form.operation">
                             <option value="">Selecione una operación</option>
@@ -55,10 +59,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group" ng-show="form.category != 0 && form.category != 1 && form.category != 10 && form.category != 14">
+                <div class="form-group"
+                    ng-show="form.category != 0 && form.category != 1 && form.category != 10 && form.category != 14">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="state">Estado <span class="mandatory">(*)</span></label>
+                            <label class="input-group-text" for="state">Estado <span
+                                    class="mandatory">(*)</span></label>
                         </div>
                         <select class="custom-select" id="state" ng-model="form.state">
                             <option value="">Selecione el estado</option>
@@ -70,13 +76,13 @@
                 <div class="row" ng-show="form.category == 2">
                     <div class="form-group col-6">
                         <label for="year">Año</label>
-                        <input type="number" min="1960" id="year" max="{{anio}}" step="1" ng-model="form.year" class="form-control"
-                            placeholder="Año">
+                        <input type="number" min="1960" id="year" max="{{anio}}" step="1" ng-model="form.year"
+                            class="form-control" placeholder="Año">
                     </div>
                     <div class="form-group col-6">
                         <label for="kilometers">Kilometros</label>
-                        <input type="number" min="0" step="1" ng-model="form.kilometers" id="kilometers" class="form-control"
-                            placeholder="Kilometros">
+                        <input type="number" min="0" step="1" ng-model="form.kilometers" id="kilometers"
+                            class="form-control" placeholder="Kilometros">
                     </div>
                 </div>
                 <h5>Datos de contacto</h5>
@@ -91,15 +97,30 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="department">Departamento <span
+                                    class="mandatory">(*)</span></label>
+                        </div>
+                        <select class="custom-select" id="department" ng-model="form.department">
+                            <option value="0">Selecione un departamento</option>
+                            <option ng-repeat="department in departments" value="{{department.id}}">{{department.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" ng-model="form.email" class="form-control">
                 </div>
             </form>
             <span class="small">Las imagenes no puede pesar mas de 3mb</span>
-            <form id="fileupload" method="POST" file-upload="options" enctype="multipart/form-data" ng-class="{'fileupload-processing': processing() || loadingFiles}">
+            <form id="fileupload" method="POST" file-upload="options" enctype="multipart/form-data"
+                ng-class="{'fileupload-processing': processing() || loadingFiles}">
                 <div class="row fileupload-buttonbar">
                     <div class="col-lg-7">
-                        <span class="btn btn-success fileinput-button" ng-class="{disabled: (disabled || queue.length >= 5) }">
+                        <span class="btn btn-success fileinput-button"
+                            ng-class="{disabled: (disabled || queue.length >= 5) }">
                             <i class="glyphicon glyphicon-plus"></i>
                             <span>Agregar foto</span>
                             <input type="file" name="files[]" multiple ng-disabled="(disabled || queue.length >= 5)">
@@ -139,7 +160,8 @@
                             <strong ng-show="file.size >= 3000000" class="error file-error text-danger">
                                 El archivo es demasiado grande
                             </strong>
-                            <strong ng-show="file.error && (3000000 > file.size)" class="error file-error text-danger">{{file.error}}</strong>
+                            <strong ng-show="file.error && (3000000 > file.size)"
+                                class="error file-error text-danger">{{file.error}}</strong>
                         </td>
                         <td>
                             <p class="size">{{file.size | formatFileSize}}</p>
@@ -149,7 +171,8 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger destroy" ng-click="clear(file); destroy(file.name)">
+                            <button type="button" class="btn btn-danger destroy"
+                                ng-click="clear(file); destroy(file.name)">
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <span>Delete</span>
                             </button>

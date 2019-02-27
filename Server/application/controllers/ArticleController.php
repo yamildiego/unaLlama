@@ -13,6 +13,7 @@ class ArticleController extends REST_Controller
         $this->load->model('Article_model');
         $this->load->model('Photo_model');
         $this->load->model('Comment_model');
+        $this->load->model('Department_model');
     }
 
     public function getCategories_get()
@@ -31,9 +32,24 @@ class ArticleController extends REST_Controller
         $this->response($data, REST_Controller::HTTP_OK); // OK (200)
     }
 
+    public function getDepartments_get()
+    {
+        $data = array('status' => null);
+        $departments = $this->Department_model->get_departments();
+        $departmentsData = array();
+
+        foreach ($departments as $department) {
+            $departmentsData[$department->getId()] = array('id' => $department->getId(), 'name' => $department->getName());
+        }
+
+        $data['status'] = 'OK';
+        $data['data'] = $departmentsData;
+
+        $this->response($data, REST_Controller::HTTP_OK); // OK (200)
+    }
+
     public function newArticle_post()
     {
-
         $user = $this->isLoged();
 
         $article = new Article();
@@ -49,6 +65,11 @@ class ArticleController extends REST_Controller
         $category = $this->Category_model->load($this->post('category'));
         if ($category != null) {
             $article->setCategory($category);
+        }
+
+        $department = $this->Department_model->load($this->post('department'));
+        if ($department != null) {
+            $article->setDepartment($department);
         }
 
         $article->setState($this->post('state'));
@@ -101,6 +122,10 @@ class ArticleController extends REST_Controller
             }
         }
 
+        if ($article->getDepartment() == null) {
+            $errors[] = "required_department";
+        }
+
         if (count($photosData) > 5) {
             $errors[] = "max_photo_limit";
         }
@@ -111,9 +136,9 @@ class ArticleController extends REST_Controller
         } else {
             $data = array('status' => "OK");
             $this->Article_model->save($article);
+
             $this->response($data, REST_Controller::HTTP_OK); // OK (200)
         }
-
     }
 
     public function getArticles_get($quantity, $page)
@@ -332,9 +357,11 @@ class ArticleController extends REST_Controller
         $data = array('status' => "OK");
 
         $category = (($this->post('category') == null || $this->post('category') == 0 || ($this->Category_model->load($this->post('category')) == null)) ? "0" : $this->post('category'));
+        $department = (($this->post('department') == null || $this->post('department') == 0 || ($this->Department_model->load($this->post('department')) == null)) ? "0" : $this->post('department'));
 
         $data['data'] = array("category" => $category,
             "search" => $this->post('search'),
+            "department" => $department,
             "operation" => $this->post('operation'),
             "priceMin" => $this->post('priceMin'),
             "priceMax" => $this->post('priceMax'),
@@ -361,6 +388,7 @@ class ArticleController extends REST_Controller
         } else {
             $data['data'] = array("category" => "0",
                 "search" => "",
+                "department" => "0",
                 "operation" => "0",
                 "priceMin" => "",
                 "priceMax" => "",
@@ -414,6 +442,8 @@ class ArticleController extends REST_Controller
                         'address' => $article->getAddress(),
                         'categoryId' => $article->getCategory()->getId() . '',
                         'category' => $article->getCategory()->getName(),
+                        'departmentId' => $article->getDepartment()->getId() . '',
+                        'department' => $article->getDepartment()->getName(),
                         'viewed' => $article->getViewed(),
                         'operation' => $article->getOperation() . '',
                         'state' => $article->getState() . '',
@@ -773,6 +803,14 @@ class ArticleController extends REST_Controller
                         $article->setCategory($category);
                     }
 
+                    $department = $this->Department_model->load($this->post('department'));
+
+                    if ($department != null) {
+                        $article->setDepartment($department);
+                    } else {
+                        $article->setDepartment(null);
+                    }
+
                     $article->setState($this->post('state'));
                     $article->setOperation($this->post('operation'));
                     $article->setYear($this->post('year'));
@@ -839,6 +877,10 @@ class ArticleController extends REST_Controller
                         if ($article->getOperation() == null || $article->getOperation() == "") {
                             $errors[] = "required_operation";
                         }
+                    }
+
+                    if ($article->getDepartment() == null) {
+                        $errors[] = "required_department";
                     }
 
                     $cont = 0;

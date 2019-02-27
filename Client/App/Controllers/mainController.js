@@ -83,6 +83,9 @@ app.controller('mainController', function ($scope, $http, AuthService, Constants
             case 'required_description':
                 msg = "El campo descripción es obligatorio.";
                 break;
+            case 'required_department':
+                msg = "El campo departamento es obligatorio.";
+                break;
             case 'required_category':
                 msg = "El campo categoria es obligatorio.";
                 break;

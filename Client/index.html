@@ -101,6 +101,9 @@
                             <span class="link-bar">Categorías</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#!/listado-por-categoria/0">
+                                Todo
+                            </a>
                             <a class="dropdown-item" href="#!/listado-por-categoria/{{category.id}}"
                                 ng-repeat="category in categories">
                                 {{category.name + ' ('+category.quantity_products+')'}}

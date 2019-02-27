@@ -65,7 +65,6 @@ class Home extends REST_Controller
         }
     }
 
-    
     private function _send_email($p_email_from, $p_email_to, $p_message, $p_subject)
     {
         $p_email_from = 'info@unallama.com.ar';

@@ -546,6 +546,64 @@ class Category
 }
 
 /**
+ * Department
+ *
+ * @Table(name="department")
+ * @Entity
+ */
+class Department
+{
+    /**
+     * @var integer
+     *
+     * @Column(name="id", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @Column(name="name", type="string", length=200, nullable=false)
+     */
+    private $name;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Category
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+}
+
+/**
  * Article
  *
  * @Table(name="article")
@@ -662,6 +720,16 @@ class Article
      * })
      */
     private $category;
+
+    /**
+     * @var \Department
+     *
+     * @ManyToOne(targetEntity="Department")
+     * @JoinColumns({
+     *   @JoinColumn(name="department_id", referencedColumnName="id")
+     * })
+     */
+    private $department;
 
     /**
      * @var \User
@@ -1036,6 +1104,28 @@ class Article
     public function getCategory()
     {
         return $this->category;
+    }
+    /**
+     * Set department
+     *
+     * @param \Department $department
+     * @return Article
+     */
+    public function setDepartment(\Department $department = null)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return \Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
     }
 
     /**
