@@ -742,6 +742,13 @@ class Article
     private $user;
 
     /**
+     * @var string
+     *
+     * @Column(name="post_id", type="text", nullable=true)
+     */
+    private $postId = null;
+
+    /**
      * @var boolean
      *
      * @Column(name="deleted", type="boolean", nullable=false)
@@ -1149,6 +1156,29 @@ class Article
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set postId
+     *
+     * @param string $postId
+     * @return Article
+     */
+    public function setPostId($postId)
+    {
+        $this->postId = $postId;
+
+        return $this;
+    }
+
+    /**
+     * Get postId
+     *
+     * @return string
+     */
+    public function getPostId()
+    {
+        return $this->postId;
     }
 
     /**

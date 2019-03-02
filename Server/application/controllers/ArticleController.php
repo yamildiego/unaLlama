@@ -135,8 +135,8 @@ class ArticleController extends REST_Controller
             $this->response($data, REST_Controller::HTTP_FOUND); // FOUND (302)
         } else {
             $data = array('status' => "OK");
-            $this->Article_model->save($article);
-
+            $article = $this->Article_model->save($article);
+            $data['data'] = $article->getId();
             $this->response($data, REST_Controller::HTTP_OK); // OK (200)
         }
     }

@@ -57,7 +57,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
             }, 500)
     }
 
-    $scope.newArticle = function (loadTP) {
+    $scope.newArticle = function (loadTP, postFB) {
         var errors = [];
 
         if ($scope.form.title == "") {
@@ -122,14 +122,14 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
             if (!$scope.sent && $scope.loadImages)
                 if (isLoading === false) {
                     $scope.sent = true;
-                    $scope.confirmNewArticle();
+                    $scope.confirmNewArticle(postFB);
                 } else {
-                    $timeout(function () { $scope.newArticle(false); }, 500);
+                    $timeout(function () { $scope.newArticle(false, postFB); }, 500);
                 }
         }
     }
 
-    $scope.confirmNewArticle = function () {
+    $scope.confirmNewArticle = function (postFB) {
         var pictures = angular.copy($scope.dataArticle.photos);
         $scope.form.photos = preparatedPhotos(pictures);
 
@@ -145,7 +145,7 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
                     if (response.data.status == 'OK') {
                         $scope.loading = false;
                         $scope.successful = true;
-                        $scope.end();
+                        $scope.end(postFB, response.data.data);
                     }
                 }, function onError(response) {
                     $scope.loading = false;
@@ -161,13 +161,18 @@ app.controller('newArticleController', function ($scope, $http, Constants, AuthS
         }
     }
 
-    $scope.end = function () {
-        if ($scope.seconds == 0)
-            $window.location.href = Constants.FRONTURL + '#!/listado-por-categoria/0';
+    $scope.end = function (postFB, pId) {
+        if ($scope.seconds == 0) {
+            if (postFB) {
+                $window.location.href = Constants.FRONTURL + '#!/ver-anuncio/' + pId + '/postFB';
+            } else {
+                $window.location.href = Constants.FRONTURL + '#!/ver-anuncio/' + pId;
+            }
+        }
         else {
             $scope.seconds = $scope.seconds - 1;
             $timeout(function () {
-                $scope.end();
+                $scope.end(postFB, pId);
             }, 1000);
         }
     }

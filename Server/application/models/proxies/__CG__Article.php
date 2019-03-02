@@ -249,6 +249,18 @@ class Article extends \Article implements \Doctrine\ORM\Proxy\Proxy
         return parent::getUser();
     }
 
+    public function setPostId($postId)
+    {
+        $this->__load();
+        return parent::setPostId($postId);
+    }
+
+    public function getPostId()
+    {
+        $this->__load();
+        return parent::getPostId();
+    }
+
     public function setDeleted($deleted)
     {
         $this->__load();
@@ -282,7 +294,7 @@ class Article extends \Article implements \Doctrine\ORM\Proxy\Proxy
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description', 'price', 'phone', 'address', 'email', 'state', 'operation', 'year', 'kilometers', 'viewed', 'datePublication', 'dateCreation', 'deleted', 'category', 'department', 'user', 'photos', 'housingType');
+        return array('__isInitialized__', 'id', 'title', 'description', 'price', 'phone', 'address', 'email', 'state', 'operation', 'year', 'kilometers', 'viewed', 'datePublication', 'dateCreation', 'postId', 'deleted', 'category', 'department', 'user', 'photos', 'housingType');
     }
 
     public function __clone()

@@ -34,7 +34,7 @@ app.factory('FaceService', function ($window, $q, $http, Constants) {
             //             FB.api('/me?fields=id,first_name,email,picture.width(100).height(100)', function (response) {
             //                 if (!response.hasOwnProperty('error')) {
 
-            var response = { "id": "10218475812315391", "first_name": "Maria Emilia", "email": "emiliaotero@hotmail.com", "picture": { "data": { "height": 100, "is_silhouette": false, "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10218475812315391&height=100&width=100&ext=1551778612&hash=AeQ9uwxVJz3lvBJE", "width": 100 } } };
+            var response = { "id": "10218475812315391", "first_name": "LOCAL Emilia", "email": "emiliaotero@hotmail.com", "picture": { "data": { "height": 100, "is_silhouette": false, "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10218475812315391&height=100&width=100&ext=1551778612&hash=AeQ9uwxVJz3lvBJE", "width": 100 } } };
 
             //                     // var response = { "id": "10217456540392511", "first_name": "Yamil", "email": "yamildiego@gmail.com", "picture": { "data": { "height": 100, "is_silhouette": false, "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10217456540392511&height=100&width=100&ext=1548641501&hash=AeTDLQr97-xNPprz", "width": 100 } } }
 

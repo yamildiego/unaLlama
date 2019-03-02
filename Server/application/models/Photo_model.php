@@ -18,4 +18,14 @@ class Photo_model extends CI_Model
         $this->em->remove($photo);
         $this->em->flush();
     }
+
+    public function getPhotoByName($file)
+    {
+        $query = $this->em->getRepository('Photo')
+            ->createQueryBuilder('p')
+            ->where("p.name = :name")
+            ->setParameter('name', $file);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

@@ -14,6 +14,17 @@ app.controller('viewArticleController', function ($scope, $http, Constants, $rou
         });
     }
 
+    $scope.postFB = function () {
+        $http.post(Constants.APIURL + 'FBController/index', { articleId: $routeParams.idArticle })
+            .then(function onSuccess(response) {
+                if (response.data.status == 'OK') {
+                    //AVISARLE AL USUARIO QUE SE PUBLICO CON EXITO EN FB
+                }
+            }, function onError(response) {
+                console.error(response);
+            });
+    }
+
     $scope.loadDepartments = function () {
         $http.get(Constants.APIURL + 'ArticleController/getDepartments')
             .then(function onSuccess(response) {
@@ -32,6 +43,9 @@ app.controller('viewArticleController', function ($scope, $http, Constants, $rou
                     $scope.article = response.data.data;
                     $scope.categories = $scope.$parent.categories;
                     $scope.loading = false;
+
+                    if ($routeParams.fb === 'postFB')
+                        $scope.postFB();
                 }
             }, function onError(response) {
                 $window.location.href = Constants.FRONTURL;

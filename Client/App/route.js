@@ -80,6 +80,11 @@ app.config(function ($routeProvider) {
             controller: 'viewArticleController',
             activetab: 'view-article'
         })
+        .when('/ver-anuncio/:idArticle/:fb', {
+            templateUrl: 'Views/view-article.html',
+            controller: 'viewArticleController',
+            activetab: 'view-article'
+        })
         .when('/perfil/:id', {
             templateUrl: 'Views/profile.html',
             controller: 'profileController'

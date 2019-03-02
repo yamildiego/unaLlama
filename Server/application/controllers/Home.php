@@ -8,9 +8,46 @@ class Home extends REST_Controller
 
     public function index_get()
     {
+        // $this->cleanPhotos();
         // $doc = new Doctrine();
         // $doc->generate_classes();
         // $this->response("OK", REST_Controller::HTTP_OK); // OK (200)
+    }
+
+    private function cleanPhotos()
+    {
+        $this->load->model('Photo_model');
+        $ruta = "./assets/php/files";
+        $directorio = opendir($ruta); //ruta actual
+        while ($file = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
+        {
+            if (is_dir($file)) //verificamos si es o no un directorio
+            {
+
+            } else {
+                if ($file != "user.png" && $file != "lowq" && $file != "thumbnail") {
+                    $photo = $this->Photo_model->getPhotoByName($file);
+                    echo $file . (($photo == null) ? ' no ' : ' si ');
+
+                    if ($photo == null) {
+                        if (file_exists($ruta . "/" . $file)) {
+                            unlink($ruta . "/" . $file);
+                            echo ' T ';
+                        }
+                        if (file_exists($ruta . "/lowq/" . $file)) {
+                            unlink($ruta . "/lowq/" . $file);
+                            echo ' T ';
+                        }
+                        if (file_exists($ruta . "/thumbnail/" . $file)) {
+                            unlink($ruta . "/thumbnail/" . $file);
+                            echo ' T ';
+                        }
+                    }
+
+                    echo "<br />";
+                }
+            }
+        }
     }
 
     public function getCategories_get()
