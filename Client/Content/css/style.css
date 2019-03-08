@@ -388,6 +388,9 @@ h1, h2, h3, h4, h5 {
     .logo-mobile {
         display: block!important
     }
+    #navbarSupportedContent .nav-link .link-bar {
+        padding-left: 10px!important;
+    }
 }
 
 @media (min-width: 768px) {
