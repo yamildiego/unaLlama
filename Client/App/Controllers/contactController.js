@@ -1,6 +1,8 @@
 app.controller('contactController', function ($scope, $http, Constants, $rootScope, AuthService, $timeout, $window) {
 
     $scope.initialize = function () {
+        angular.element(document.querySelector('#navbarSupportedContent')).removeClass("show");
+
         $scope.errors = [];
         $scope.seconds = 5;
         $scope.form = { name: "", email: "", query: "" };

@@ -1,6 +1,8 @@
 app.controller('homeController', function ($scope, AuthService, $http, Constants, $rootScope) {
 
     $scope.initialize = function () {
+        angular.element(document.querySelector('#navbarSupportedContent')).removeClass("show");
+
         $scope.getCategories();
         AuthService.checkAuthInside().then(function (response) {
             $rootScope.$broadcast("connected", response.data.status);

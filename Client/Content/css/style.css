@@ -346,9 +346,27 @@ h1, h2, h3, h4, h5 {
     color: #105896;
 }
 
+.logo-mobile {
+    position: absolute;
+    left: 90px;
+    top: -4px;
+    display: none;
+}
+
+.logo-mobile img {
+    width: 35px;
+}
+
+.logo-mobile span {
+    color: #fff;
+}
+
 @media (min-width: 576px) {}
 
 @media (max-width: 768px) {
+    .logo-mobile {
+        display: block!important
+    }
     .wjv {
         display: none;
     }
@@ -366,7 +384,11 @@ h1, h2, h3, h4, h5 {
     }
 }
 
-@media (min-width: 768px) and (max-width: 992px) {}
+@media (min-width: 768px) and (max-width: 992px) {
+    .logo-mobile {
+        display: block!important
+    }
+}
 
 @media (min-width: 768px) {
     input.search {

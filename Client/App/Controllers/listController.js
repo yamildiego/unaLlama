@@ -1,6 +1,8 @@
 app.controller('listController', function ($scope, $http, Constants, AuthService, $rootScope) {
 
     $scope.initialize = function () {
+        angular.element(document.querySelector('#navbarSupportedContent')).removeClass("show");
+
         $scope.$parent.search = { category: { id: 0, name: "Categoría" }, text: "" };
         $scope.loading = true;
         $scope.loadBtnData = false;

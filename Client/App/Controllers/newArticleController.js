@@ -1,5 +1,8 @@
 app.controller('newArticleController', function ($scope, $http, Constants, AuthService, $window, $timeout, $rootScope, Popeye) {
+
     $scope.initialize = function () {
+        angular.element(document.querySelector('#navbarSupportedContent')).removeClass("show");
+
         $scope.loading = true;
         $scope.sizeMax = Constants.SIZEMAX;
         $scope.successful = false;
