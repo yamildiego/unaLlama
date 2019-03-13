@@ -1,7 +1,8 @@
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'Views/home.html',
+            cache: false,
+            templateUrl: 'Views/home.html?v1',
             controller: 'homeController',
             activetab: 'home'
         })

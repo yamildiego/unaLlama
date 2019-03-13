@@ -1,4 +1,5 @@
-app.controller('homeController', function ($scope, AuthService, $http, Constants, $rootScope) {
+app.controller('homeController', function ($scope, $templateCache, AuthService, $http, Constants, $rootScope) {
+    $templateCache.removeAll();
 
     $scope.initialize = function () {
         angular.element(document.querySelector('#navbarSupportedContent')).removeClass("show");
