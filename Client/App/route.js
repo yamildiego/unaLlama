@@ -2,22 +2,22 @@ app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             cache: false,
-            templateUrl: 'Views/home.html?v1',
+            templateUrl: 'Views/home.html?v4',
             controller: 'homeController',
             activetab: 'home'
         })
         .when('/listado', {
-            templateUrl: 'Views/list.html',
+            templateUrl: 'Views/list.html?v1',
             controller: 'listController',
             activetab: 'list'
         })
         .when('/listado-por-categoria/:idCategory', {
-            templateUrl: 'Views/list.html',
+            templateUrl: 'Views/list.html?v1',
             controller: 'listForCategoryController',
             activetab: 'list'
         })
         .when('/listado-por-categoria-y-texto/:idCategory/:textSearch', {
-            templateUrl: 'Views/list.html',
+            templateUrl: 'Views/list.html?v1',
             controller: 'listForCategoryController',
             activetab: 'list'
         })
