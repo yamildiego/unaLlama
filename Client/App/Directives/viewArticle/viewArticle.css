@@ -183,6 +183,25 @@
     .article .price {
         padding: 0.5rem 0 0 0;
     }
+    .my-card .operation {
+        left: 5%;
+    }
+    .label-category {
+        width: 164px;
+        left: -72px;
+        top: 72px;
+        border-radius: 0;
+        border-top-right-radius: 4px;
+    }
+    .link-more a {
+        width: 60%;
+    }
+    .article p.title-article {
+        padding-left: 30px;
+    }
+    .hsm {
+        display: none;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 992px) {

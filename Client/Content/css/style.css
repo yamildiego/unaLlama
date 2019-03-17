@@ -369,6 +369,11 @@ h1, h2, h3, h4, h5 {
 @media (min-width: 576px) {}
 
 @media (max-width: 768px) {
+    .card-body {
+        padding-top: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
     .card-home .links-categories .category-link {
         margin-top: 0!important;
     }

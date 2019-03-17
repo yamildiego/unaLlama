@@ -19,15 +19,15 @@
                 <div class="col-md-9 my-col-9">
                     <p class="card-text title-article {{getOperation(article.operation)}}-text" ng-class="getOperation(article.operation)">
                         {{article.title}}
-                        <a class="link-favorites" style="padding-right: 5px;" ng-show="sessionExpired" href>
+                        <a class="link-favorites hsm" style="padding-right: 5px;" ng-show="sessionExpired" href>
                             Es necesario iniciar sesión para agregar anuncios a favoritos.
                         </a>
-                        <loading class="float-right" style="padding-right: 5px;" size="fa-1x" ng-show="article.loadingFavorite"></loading>
-                        <a href class="link-favorites" ng-click="addRemoveFb(article, 'add')" ng-hide="article.loadingFavorite || article.isFb || sessionExpired">
+                        <loading class="float-right hsm" style="padding-right: 5px;" size="fa-1x" ng-show="article.loadingFavorite"></loading>
+                        <a href class="link-favorites hsm" ng-click="addRemoveFb(article, 'add')" ng-hide="article.loadingFavorite || article.isFb || sessionExpired">
                             <i class="far fa-star"></i>
                             <span> Agregar a favoritos</span>
                         </a>
-                        <a href class="link-favorites" ng-click="addRemoveFb(article, 'remove')" ng-hide="article.loadingFavorite || !article.isFb || sessionExpired">
+                        <a href class="link-favorites hsm" ng-click="addRemoveFb(article, 'remove')" ng-hide="article.loadingFavorite || !article.isFb || sessionExpired">
                             <i class="fas fa-star"></i>
                             <span> Eliminar de favoritos</span>
                         </a>
@@ -37,7 +37,7 @@
                             <p class="text-article">{{article.description.substr(0,180).trim()}}...</p>
                         </div>
                         <div class="col-md-3">
-                            <div class="link-more">
+                            <div class="link-more text-center">
                                 <a href="#!/ver-anuncio/{{article.id}}" class="btn btn-info btn-sm">
                                     Ver más
                                 </a>
