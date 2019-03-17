@@ -1,4 +1,4 @@
-app.controller('mainController', function ($scope, $http, AuthService, Constants, $location, $window, $route, $rootScope, FaceService) {
+app.controller('mainController', function ($scope, $http, AuthService, CommonsService, Constants, $location, $window, $route, $rootScope, FaceService) {
     $scope.load = true;
     FaceService.initialize();
 
@@ -56,14 +56,15 @@ app.controller('mainController', function ($scope, $http, AuthService, Constants
     }
 
     $scope.getCategories = function () {
-        $http.get(Constants.APIURL + 'ArticleController/getCategories')
-            .then(function onSuccess(response) {
-                if (response.data.status == 'OK') {
-                    $scope.categories = response.data.data;
-                }
-            }, function onError(response) {
-
-            });
+        CommonsService.getCategories().then(function onSuccess(response) {
+            if (response.data.status == 'OK') {
+                $scope.categories = response.data.data;
+            } else {
+                $scope.categories = []
+            }
+        }, function onError(response) {
+            $scope.categories = []
+        });
     }
 
     $scope.initialize();
