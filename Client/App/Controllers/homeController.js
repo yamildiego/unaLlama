@@ -1,8 +1,23 @@
-app.controller('homeController', function ($scope, $templateCache, AuthService, $http, Constants, $rootScope) {
+app.controller('homeController', function ($scope, $templateCache, $timeout, AuthService, Popeye, $http, Constants, $rootScope, $localStorage) {
     $templateCache.removeAll();
 
     $scope.initialize = function () {
         angular.element(document.querySelector('#navbarSupportedContent')).removeClass("show");
+
+        var now = Math.floor(new Date().getTime() / 1000);
+
+        if ((now < 1556668800)) {
+            if ($localStorage.promotion === undefined) {
+                $scope.showPromotion(now);
+            } else {
+                if ($localStorage.promotion === false || isNaN($localStorage.promotion)) {
+                    $localStorage.promotion = now;
+                } else {
+                    if (($localStorage.promotion + 604800) < now)
+                        $scope.showPromotion(now);
+                }
+            }
+        }
 
         $scope.getCategories();
         AuthService.checkAuthInside().then(function (response) {
@@ -14,6 +29,20 @@ app.controller('homeController', function ($scope, $templateCache, AuthService, 
         $scope.loadMostVisited();
         $scope.loadMostPopular();
         $scope.loadMostRecent();
+    }
+
+    $scope.showPromotion = function (now) {
+        $timeout(function () {
+            var modal = Popeye.openModal({
+                containerClass: "promotion-modal",
+                templateUrl: './Views/promotion.html'
+            });
+
+            modal.closed.then(function (value) {
+                $localStorage.promotion = now;
+            });
+
+        }, 1000);
     }
 
     $scope.loadMostVisited = function () {

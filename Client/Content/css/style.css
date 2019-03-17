@@ -168,6 +168,7 @@ a:active, a:focus {
 
 .card-home .links-categories .category-link {
     width: 100%;
+    margin-top: 5px;
     font-size: 14px;
 }
 
@@ -361,9 +362,16 @@ h1, h2, h3, h4, h5 {
     color: #fff;
 }
 
+.promotion-modal .popeye-modal {
+    width: 690px;
+}
+
 @media (min-width: 576px) {}
 
 @media (max-width: 768px) {
+    .card-home .links-categories .category-link {
+        margin-top: 0!important;
+    }
     .popeye-modal {
         position: absolute!important;
         left: 0;
