@@ -5,6 +5,7 @@
 
 body {
     overflow: scroll;
+    background-image: url('./../images/back.png')
 }
 
 a:active, a:focus {
@@ -70,14 +71,19 @@ a:active, a:focus {
 }
 
 .btn-fb {
-    background: #3b5998;
+    background: #4267B2;
     color: #fff;
     margin-top: 1rem;
+    width: 225px;
 }
 
 .btn-fb:hover {
-    background: #37528c;
+    background: #3b5ca0;
     color: #fff;
+}
+
+.btn-fb span {
+    vertical-align: 5px;
 }
 
 .mandatory {
