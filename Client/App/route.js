@@ -102,6 +102,10 @@ app.config(function ($routeProvider) {
         .when('/publicidad', {
             templateUrl: 'Views/ad.html'
         })
+        .when('/participantes-del-concurso', {
+            templateUrl: 'Views/participants.html',
+            controller: 'participantsController'
+        })
         .when('/validateAccount/:userId/:code', {
             templateUrl: 'Views/validate-account.html',
             controller: 'validateAccountController'

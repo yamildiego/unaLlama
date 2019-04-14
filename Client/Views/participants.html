@@ -1,0 +1,48 @@
+<loading ng-show="loading" margin="10"></loading>
+<div ng-hide="showList">
+    <div ng-show="!loading" style="background: #fff; border-radius: 90px; padding: 40px; margin: 20px;">
+        <h1 class="text-center">
+            Queres conocer la lista de los participantes ????
+        </h1>
+        <h2 class="text-center" style="color:#444;">
+            Compartí la web con el siguiente enlace etiquetando a tres amigos y conoce la lista...
+        </h2>
+        <div class="text-center">
+            <a class="btn btn-fb text-center" href ng-click="shared();">
+                <i class="fab fa-facebook" style="font-size: 30px;"></i>
+                <span>Compartir</span>
+            </a>
+        </div>
+        <br>
+        <br>
+        <p class="text-center">Si aun no publicaste tu anuncio, <a href="#!/publicar-anuncio">publicalo aqui!</a> y
+            participas por un TV 32''
+        </p>
+        <div class="small text-center">Es totalmente GRATIS!!!</div>
+    </div>
+</div>
+
+<div ng-show="showList">
+    <h1 class="text-center">Listado de participantes</h1>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <table class="table bg-light">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Usuario | Nombre</th>
+                        <th scope="col">Perfil de Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="participant in participants">
+                        <td>{{participant.id}}</td>
+                        <td>{{participant.name}}</td>
+                        <td><a href="#!/perfil/{{participant.id}}">Ver perfil</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
