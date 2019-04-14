@@ -372,6 +372,11 @@ h1, h2, h3, h4, h5 {
     width: 690px;
 }
 
+.border-ad {
+    border: 1px solid #337ab7;
+    margin-bottom: 5px;
+}
+
 @media (min-width: 576px) {}
 
 @media (max-width: 768px) {
