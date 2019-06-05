@@ -30,7 +30,7 @@ class Article_model extends CI_Model
         $query = $this->em->getRepository('Article')->createQueryBuilder('a');
 
         $today = new DateTime();
-        $today->modify('- 30 days');
+        $today->modify('- 90 days');
         $sql = ' a.deleted = 0 AND a.datePublication >= :date ';
 
         if (isset($filter->search) && $filter->search !== 0 && $filter->search !== "0" && $filter->search != "" && $filter->search != null) {
@@ -155,7 +155,7 @@ class Article_model extends CI_Model
     public function getUserArticles($userId)
     {
         $today = new DateTime();
-        $today->modify('- 30 days');
+        $today->modify('- 90 days');
 
         $query = $this->em->getRepository('Article')
             ->createQueryBuilder('a')
@@ -169,7 +169,7 @@ class Article_model extends CI_Model
     public function getArticlesMostRecent()
     {
         $today = new DateTime();
-        $today->modify('- 30 days');
+        $today->modify('- 90 days');
 
         $query = $this->em->getRepository('Article')
             ->createQueryBuilder('a')
@@ -199,7 +199,7 @@ class Article_model extends CI_Model
     public function getArticlesMostPopular()
     {
         $today = new DateTime();
-        $today->modify('- 30 days');
+        $today->modify('- 90 days');
 
         $sql = "SELECT COUNT(*) AS count, a.id FROM article a JOIN favorite f ON f.article_id = a.id WHERE a.deleted = 0 AND a.date_publication >= '" . $today->format('Y-m-d G:i:s') . "' GROUP BY a.id ORDER BY COUNT(*) DESC LIMIT 4";
         $stmt = $this->em->getConnection()->prepare($sql);
@@ -216,7 +216,7 @@ class Article_model extends CI_Model
     public function getQuantityProducts($categoryId)
     {
         $today = new DateTime();
-        $today->modify('- 30 days');
+        $today->modify('- 90 days');
 
         return $this->em->getRepository('Article')->createQueryBuilder('a')
             ->select('count(a.id)')

@@ -91,7 +91,8 @@ class Home extends REST_Controller
             $this->response($data, REST_Controller::HTTP_FOUND); // FOUND (302)
         } else {
             $mensaje = $this->load->view('email_contact_view', array('obj' => $obj), true);
-            $status_email = $this->_send_email('info@unallama.com.ar', 'yamildiego@gmail.com', $mensaje, 'Consulta desde la Web: ' . 'Consulta WEB Unallama');
+            $status_email = true;
+            // $status_email = $this->_send_email('info@unallama.com.ar', 'yamildiego@gmail.com', $mensaje, 'Consulta desde la Web: ' . 'Consulta WEB Unallama');
 
             if ($status_email) {
                 $data = array('status' => "OK");

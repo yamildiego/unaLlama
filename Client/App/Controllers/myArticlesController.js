@@ -36,7 +36,7 @@ app.controller('myArticlesController', function ($scope, AuthService, $window, $
     $scope.getDays = function (pDatePublication) {
         var date_publication = new Date(pDatePublication * 1000);
         var today = new Date();
-        var days = 30 - (Math.round((today.getTime() - date_publication.getTime()) / 60 / 60 / 24 / 1000));
+        var days = 90 - (Math.round((today.getTime() - date_publication.getTime()) / 60 / 60 / 24 / 1000));
 
         return (days < 0 ? 0 : days);
     }

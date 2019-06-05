@@ -75,7 +75,7 @@ app.config(function ($routeProvider) {
             activetab: 'favorites'
         })
         .when('/mis-anuncios', {
-            templateUrl: 'Views/my-articles.html',
+            templateUrl: 'Views/my-articles.html?v1',
             controller: 'myArticlesController',
             activetab: 'my-articles'
         })

@@ -429,7 +429,7 @@ class ArticleController extends REST_Controller
                     }
 
                     $date = $article->getDatePublication();
-                    $date->modify('+30 days');
+                    $date->modify('+90 days');
                     $today = date_create();
 
                     $articleData = array('id' => $article->getId(),
