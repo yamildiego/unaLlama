@@ -54,7 +54,7 @@ class ArticleController extends REST_Controller
 
         $article = new Article();
         $article->setUser($user);
-        $article->setDeleted(0);
+        $article->setActive(1);
         $article->setTitle($this->post('title'));
         $article->setDescription($this->post('description'));
         $article->setPrice($this->post('price'));
@@ -422,16 +422,6 @@ class ArticleController extends REST_Controller
                 $article = $this->Article_model->load($articleId);
 
                 if ($article != null) {
-
-                    if ($article->getDeleted()) {
-                        $data['status'] = 'article_deleted';
-                        $this->response($data, REST_Controller::HTTP_FOUND); // FOUND (302)
-                    }
-
-                    $date = $article->getDatePublication();
-                    $date->modify('+90 days');
-                    $today = date_create();
-
                     $articleData = array('id' => $article->getId(),
                         'title' => $article->getTitle(),
                         'description' => $article->getDescription(),
@@ -447,7 +437,7 @@ class ArticleController extends REST_Controller
                         'viewed' => $article->getViewed(),
                         'operation' => $article->getOperation() . '',
                         'state' => $article->getState() . '',
-                        'isPublished' => ($date->format('Y-m-d H:i:s') > $today->format('Y-m-d H:i:s')),
+                        'isPublished' => $article->getActive(),
                         'date_publication' => $article->getDatePublication()->getTimestamp(),
                         'user' => array('id' => $article->getUser()->getId(), 'name' => $article->getUser()->getName(), 'username' => $article->getUser()->getUsername()),
                         'date_creation' => $article->getDateCreation()->getTimestamp());
@@ -498,6 +488,8 @@ class ArticleController extends REST_Controller
             $articles = $this->Article_model->getMyArticles($user->getId());
             $articlesData = array();
             foreach ($articles as $article) {
+                $today = new DateTime();
+                $diff = $today->diff($article->getDatePublication());
                 $articleData = array('id' => $article->getId(),
                     'title' => $article->getTitle(),
                     'description' => $article->getDescription(),
@@ -506,7 +498,9 @@ class ArticleController extends REST_Controller
                     'viewed' => $article->getViewed(),
                     'operation' => $article->getOperation(),
                     'state' => $article->getState(),
+                    'active' => $article->getActive(),
                     'date_publication' => $article->getDatePublication()->getTimestamp(),
+                    'republish'=> $diff->days,
                     'date_creation' => $article->getDateCreation()->getTimestamp());
 
                 $photos = array();
@@ -673,7 +667,10 @@ class ArticleController extends REST_Controller
                 $article = $this->Article_model->load($articleId);
 
                 if ($article->getUser()->getId() == $userId) {
-                    $article->setDeleted(1);
+                    if($article->getActive() == 0)
+                        $article->setActive(1);
+                    else
+                        $article->setActive(0);
                     $this->Article_model->save($article);
 
                     $data = array('status' => "OK");
@@ -737,7 +734,6 @@ class ArticleController extends REST_Controller
             $articlesData = array();
             foreach ($user->getServices() as $article) {
 
-                if ($article->getDeleted() == 0) {
                     $articleData = array('id' => $article->getId(),
                         'title' => $article->getTitle(),
                         'description' => $article->getDescription(),
@@ -767,7 +763,6 @@ class ArticleController extends REST_Controller
                     $articleData["photos"] = $photos;
                     $articlesData[] = $articleData;
                 }
-            }
 
             $data = array('status' => "OK", 'data' => $articlesData);
 

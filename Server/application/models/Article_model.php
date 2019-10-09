@@ -6,6 +6,7 @@ class Article_model extends CI_Model
 {
 
     public $em;
+    private $days = 365;
 
     public function __construct()
     {
@@ -29,9 +30,7 @@ class Article_model extends CI_Model
     {
         $query = $this->em->getRepository('Article')->createQueryBuilder('a');
 
-        $today = new DateTime();
-        $today->modify('- 90 days');
-        $sql = ' a.deleted = 0 AND a.datePublication >= :date ';
+        $sql = ' a.active = 1 ';
 
         if (isset($filter->search) && $filter->search !== 0 && $filter->search !== "0" && $filter->search != "" && $filter->search != null) {
             $words = explode(" ", $filter->search);
@@ -134,9 +133,7 @@ class Article_model extends CI_Model
             $query->setParameter('states', $filter->state);
         }
 
-        $query->setParameter('date', $today->format('Y-m-d G:i:s'))->orderBy('a.datePublication', 'DESC');
-
-        $query->setFirstResult($quantity * ($page - 1))->setMaxResults($quantity);
+        $query->orderBy('a.datePublication', 'DESC')->setFirstResult($quantity * ($page - 1))->setMaxResults($quantity);
 
         return $query->getQuery()->getResult();
     }
@@ -145,7 +142,7 @@ class Article_model extends CI_Model
     {
         $query = $this->em->getRepository('Article')
             ->createQueryBuilder('a')
-            ->where("a.user = :userId AND a.deleted = 0 ")
+            ->where("a.user = :userId")
             ->setParameter('userId', $userId)
             ->orderBy('a.datePublication', 'DESC');
 
@@ -154,13 +151,9 @@ class Article_model extends CI_Model
 
     public function getUserArticles($userId)
     {
-        $today = new DateTime();
-        $today->modify('- 90 days');
-
         $query = $this->em->getRepository('Article')
             ->createQueryBuilder('a')
-            ->where("a.user = :userId AND a.deleted = 0 AND a.datePublication >= :date ")
-            ->setParameter('date', $today->format('Y-m-d G:i:s'))
+            ->where("a.user = :userId AND a.active = 1 ")
             ->setParameter('userId', $userId)->orderBy('a.datePublication', 'DESC');
 
         return $query->getQuery()->getResult();
@@ -168,13 +161,9 @@ class Article_model extends CI_Model
 
     public function getArticlesMostRecent()
     {
-        $today = new DateTime();
-        $today->modify('- 90 days');
-
         $query = $this->em->getRepository('Article')
             ->createQueryBuilder('a')
-            ->where("a.deleted = 0 AND a.datePublication >= :date ")
-            ->setParameter('date', $today->format('Y-m-d G:i:s'))
+            ->where("a.active = 1")
             ->setMaxResults(4)
             ->orderBy('a.dateCreation', 'DESC');
 
@@ -183,13 +172,9 @@ class Article_model extends CI_Model
 
     public function getArticlesMostVisited()
     {
-        $today = new DateTime();
-        $today->modify('- 7 days');
-
         $query = $this->em->getRepository('Article')
             ->createQueryBuilder('a')
-            ->where("a.deleted = 0 AND a.datePublication >= :date ")
-            ->setParameter('date', $today->format('Y-m-d G:i:s'))
+            ->where("a.active = 1")
             ->setMaxResults(4)
             ->orderBy('a.viewed', 'DESC');
 
@@ -198,10 +183,7 @@ class Article_model extends CI_Model
 
     public function getArticlesMostPopular()
     {
-        $today = new DateTime();
-        $today->modify('- 90 days');
-
-        $sql = "SELECT COUNT(*) AS count, a.id FROM article a JOIN favorite f ON f.article_id = a.id WHERE a.deleted = 0 AND a.date_publication >= '" . $today->format('Y-m-d G:i:s') . "' GROUP BY a.id ORDER BY COUNT(*) DESC LIMIT 4";
+        $sql = "SELECT COUNT(*) AS count, a.id FROM article a JOIN favorite f ON f.article_id = a.id WHERE a.active = 1 GROUP BY a.id ORDER BY COUNT(*) DESC LIMIT 4";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
@@ -215,14 +197,10 @@ class Article_model extends CI_Model
 
     public function getQuantityProducts($categoryId)
     {
-        $today = new DateTime();
-        $today->modify('- 90 days');
-
         return $this->em->getRepository('Article')->createQueryBuilder('a')
             ->select('count(a.id)')
-            ->where("a.category = :categoryId AND a.deleted = 0 AND a.datePublication >= :date ")
+            ->where("a.category = :categoryId AND a.active = 1")
             ->setParameter('categoryId', $categoryId)
-            ->setParameter('date', $today->format('Y-m-d G:i:s'))
             ->getQuery()
             ->getSingleScalarResult();
     }

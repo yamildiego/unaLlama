@@ -20,10 +20,6 @@ app.controller('myArticlesController', function ($scope, AuthService, $window, $
             .then(function onSuccess(response) {
                 if (response.data.status == 'OK') {
                     $scope.myArticles = response.data.data;
-                    $scope.myArticles.forEach(function (element) {
-                        element.show = ($scope.getDays(element.date_publication) == 0);
-                    });
-
                     $scope.loading = false;
                 }
             }, function onError(response) {
@@ -33,21 +29,28 @@ app.controller('myArticlesController', function ($scope, AuthService, $window, $
             });
     }
 
-    $scope.getDays = function (pDatePublication) {
-        var date_publication = new Date(pDatePublication * 1000);
-        var today = new Date();
-        var days = 90 - (Math.round((today.getTime() - date_publication.getTime()) / 60 / 60 / 24 / 1000));
-
-        return (days < 0 ? 0 : days);
-    }
-
-    $scope.remove = function (pArticle) {
+    $scope.active = function (pArticle) {
         var userId = ($scope.$parent.userData && $scope.$parent.userData.id) ? $scope.$parent.userData.id : 0;
 
         var modal = Popeye.openModal({
             templateUrl: './Views/confirm-modal.html',
             controller: "confirmRemoveController",
-            locals: { text: "¿Estas seguro que quieres eliminar el articulo '" + pArticle.title + "' ?", yes: "Confirmar", no: "Cancelar", extraOneId: pArticle.id, extraTwoId: userId }
+            locals: { text: "¿Estas seguro que quieres dar de alta el articulo '" + pArticle.title + "' ?", yes: "Confirmar", no: "Cancelar", extraOneId: pArticle.id, extraTwoId: userId }
+        });
+
+        modal.closed.then(function (value) {
+            if (value === true)
+                $scope.getMyArticles();
+        });
+    }
+
+    $scope.inactive = function (pArticle) {
+        var userId = ($scope.$parent.userData && $scope.$parent.userData.id) ? $scope.$parent.userData.id : 0;
+
+        var modal = Popeye.openModal({
+            templateUrl: './Views/confirm-modal.html',
+            controller: "confirmRemoveController",
+            locals: { text: "¿Estas seguro que quieres dar de baja el articulo '" + pArticle.title + "' ?", yes: "Confirmar", no: "Cancelar", extraOneId: pArticle.id, extraTwoId: userId }
         });
 
         modal.closed.then(function (value) {

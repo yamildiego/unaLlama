@@ -751,9 +751,9 @@ class Article
     /**
      * @var boolean
      *
-     * @Column(name="deleted", type="boolean", nullable=false)
+     * @Column(name="active", type="boolean", nullable=false)
      */
-    private $deleted;
+    private $active;
 
     /**
      * @OneToMany(targetEntity="Photo", mappedBy="article", cascade={"all"})
@@ -1182,26 +1182,26 @@ class Article
     }
 
     /**
-     * Set deleted
+     * Set active
      *
-     * @param boolean $deleted
+     * @param boolean $active
      * @return Article
      */
-    public function setDeleted($deleted)
+    public function setActive($active)
     {
-        $this->deleted = $deleted;
+        $this->active = $active;
 
         return $this;
     }
 
     /**
-     * Get deleted
+     * Get active
      *
      * @return boolean
      */
-    public function getDeleted()
+    public function getActive()
     {
-        return $this->deleted;
+        return $this->active;
     }
 
     /**

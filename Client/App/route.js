@@ -75,12 +75,12 @@ app.config(function ($routeProvider) {
             activetab: 'favorites'
         })
         .when('/mis-anuncios', {
-            templateUrl: 'Views/my-articles.html?v1',
+            templateUrl: 'Views/my-articles.html?v2',
             controller: 'myArticlesController',
             activetab: 'my-articles'
         })
         .when('/ver-anuncio/:idArticle', {
-            templateUrl: 'Views/view-article.html',
+            templateUrl: 'Views/view-article.html?v2',
             controller: 'viewArticleController',
             activetab: 'view-article'
         })

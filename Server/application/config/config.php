@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 $config['name_web'] = 'Una Llama';
-$config['url_frontend'] = 'http://localhost/unallamanew/Client/';
+$config['url_frontend'] = 'http://localhost:81/unallama/Client/';
 $config['logo_thumbnail'] = 'https://i.ibb.co/dr8VtTQ/logo.png';
 $config['url_web'] = 'www.UnaLlama.com';
 $config['email_noreply'] = 'no-responder@unallama.com';
